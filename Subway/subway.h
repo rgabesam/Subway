@@ -3,8 +3,24 @@
 
 #include <string>
 #include <set>
+#include <deque>
 
+class Station;
 using StationPtr = std::shared_ptr<Station>;
+class Train;
+using TrainPtr = std::shared_ptr<Train>;
+
+class Line {
+public:
+	Line(int i, int num) : id(i), numberOfStations(num) {}
+	int GetID() { return id; }
+	int GetnumberOfStations() { return numberOfStations; }
+	std::deque<StationPtr> stations;
+	std::deque<TrainPtr> onTheWay;
+private:
+	int id;
+	int numberOfStations;
+};
 
 
 class Station {
