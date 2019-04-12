@@ -115,7 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="inputParser.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="subway.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inputParser.h" />
+    <ClInclude Include="subway.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
