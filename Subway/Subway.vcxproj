@@ -117,10 +117,12 @@
   <ItemGroup>
     <ClCompile Include="inputParser.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="simulation.cpp" />
     <ClCompile Include="subway.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inputParser.h" />
+    <ClInclude Include="simulation.h" />
     <ClInclude Include="subway.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
