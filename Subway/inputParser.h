@@ -14,7 +14,7 @@ public:
 	std::shared_ptr<Line> ParseSubwayLine();
 private:
 	void ReadLine(); //put whole line into stringstream, and also clear whole ss
-	std::string ReadWorld();	//return one world of line or \n at the end
+	std::string& ReadWorld();	//return one world of line or \n at the end
 	StationPtr ParseStation();
 	std::ifstream ifs;
 	std::stringstream ss;

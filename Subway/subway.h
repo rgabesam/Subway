@@ -27,18 +27,19 @@ private:
 
 class Station {
 public:
-	Station(int i, int freq, bool transf, std::string s) :id(i), frequency(freq), transferStation(transf), name(s) {}
+	Station(std::string s, int freq, bool transf) : name(s), frequency(freq), transferStation(transf) {}
 	int AcceptPassengers(int value);
 	int GeneratePassengers();
 	int GetFrequency() { return frequency; }
-	int GetID() { return id; }
+	//int GetID() { return id; }
 	std::string GetName(){ return name; }
 	bool IsTransferStation() { return transferStation; }
 	StationPtr next;
 	StationPtr prev;
 	std::set<StationPtr> transfers;
+	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 private:
-	int id;
+	//int id;
 	int frequency;
 	bool transferStation;
 	std::string name;

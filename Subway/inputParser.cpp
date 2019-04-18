@@ -12,13 +12,13 @@ void Parser::ReadLine()
 	ss << line;
 }
 
-std::string Parser::ReadWorld()
+std::string& Parser::ReadWorld()
 {
 	string ret;
 	if (ss.good())
 		ss >> ret;
 	else
-		return "\n";
+		ret = "\n";
 	return ret;
 }
 
@@ -47,5 +47,25 @@ shared_ptr<Line> Parser::ParseSubwayLine()
 
 StationPtr Parser::ParseStation()
 {
-	return StationPtr();
+	string name;
+	string s;
+	int freq;
+	
+
+	name = ReadWorld();
+	freq = stoi(ReadWorld());
+
+	s = ReadWorld();
+	if (s == "()") {
+		return make_shared<Station>(Station(name, freq, true));
+	}
+
+	Station station(name, freq, true);	
+	s = ReadWorld();
+	while (s != ")") {
+		station.transfersToResolve.emplace(stoi(s));
+		s = ReadWorld();
+	}
+
+	return make_shared<Station>(station);
 }
