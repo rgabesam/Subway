@@ -9,6 +9,8 @@ class Station;
 using StationPtr = std::shared_ptr<Station>;
 class Train;
 using TrainPtr = std::shared_ptr<Train>;
+class Line;
+using LinePtr = std::shared_ptr<Line>;
 
 class Line {
 public:
