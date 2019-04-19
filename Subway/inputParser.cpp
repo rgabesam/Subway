@@ -4,22 +4,20 @@
 
 using namespace std;
 
-void Parser::ReadLine()
-{
-	ss.clear();
-	string line;
-	getline(ifs, line);
-	ss << line;
-}
 
-std::string& Parser::ReadWorld()
+map<int, LinePtr> Parser::ParseInputFile()
 {
-	string ret;
-	if (ss.good())
-		ss >> ret;
-	else
-		ret = "\n";
-	return ret;
+	map<int, LinePtr> subway;
+	ReadLine();
+	
+	int numberOfLines = stoi(ReadWorld());
+	for (int i = 0; i < numberOfLines; i++)
+	{
+		auto line = ParseSubwayLine();
+		subway.emplace(make_pair(line->GetID(), line));
+	}
+
+	return subway;
 }
 
 shared_ptr<Line> Parser::ParseSubwayLine()
@@ -57,7 +55,7 @@ StationPtr Parser::ParseStation()
 
 	s = ReadWorld();
 	if (s == "()") {
-		return make_shared<Station>(Station(name, freq, true));
+		return make_shared<Station>(Station(name, freq, false));
 	}
 
 	Station station(name, freq, true);	
@@ -68,4 +66,23 @@ StationPtr Parser::ParseStation()
 	}
 
 	return make_shared<Station>(station);
+}
+
+
+void Parser::ReadLine()
+{
+	ss.clear();
+	string line;
+	getline(ifs, line);
+	ss << line;
+}
+
+std::string Parser::ReadWorld()
+{
+	string ret;
+	if (ss.good())
+		ss >> ret;
+	else
+		ret = "\n";
+	return ret;
 }

@@ -34,8 +34,8 @@ public:
 	//int GetID() { return id; }
 	std::string GetName(){ return name; }
 	bool IsTransferStation() { return transferStation; }
-	StationPtr next;
-	StationPtr prev;
+	//StationPtr next;
+	//StationPtr prev;
 	std::set<StationPtr> transfers;
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 private:
