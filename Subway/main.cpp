@@ -10,9 +10,10 @@ using namespace std;
 
 int main() {
 	Parser parser("input.txt");
-	auto subway = parser.ParseInputFile();
-
-	cout << subway.size();
+	auto output = parser.ParseInputFile();
+	auto subway = output.second;
+	cout << "number of links is :" << subway.size() << endl;
+	cout << "subway is working " << output.first << " hours per day";
 
 	//string s;
 	//cin >> s;

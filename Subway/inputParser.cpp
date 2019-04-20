@@ -6,11 +6,10 @@
 using namespace std;
 
 
-map<int, LinePtr> Parser::ParseInputFile()
+pair<int, map<int, LinePtr>> Parser::ParseInputFile()
 {
 	map<int, LinePtr> subway;
 	ReadLine();
-	
 	int numberOfLines = stoi(ReadWorld());
 	int hours = stoi(ReadWorld());
 	for (int i = 0; i < numberOfLines; i++)
@@ -19,7 +18,7 @@ map<int, LinePtr> Parser::ParseInputFile()
 		subway.emplace(make_pair(line->GetID(), line));
 	}
 
-	return subway;
+	return make_pair(hours, subway);
 }
 
 shared_ptr<Line> Parser::ParseSubwayLine(int hours)
