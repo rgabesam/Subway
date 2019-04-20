@@ -54,12 +54,12 @@ class TimeSection;		//need to be declared because of translation
 using TimeSectionPtr = std::shared_ptr<TimeSection>;	
 class Train {
 public:
-	Train(int maxCapacity, TimeSectionPtr timeSection) : capacity(maxCapacity), left(timeSection), remainsToNext(2) {}
+	Train(int maxCapacity, TimeSectionPtr timeSection) : capacity(maxCapacity), start(timeSection), remainsToNext(2) {}
 	//void MoveNext();
 	int ReleasePassengers();
 	void AcceptPassengers(int value);
 	StationPtr next;
-	TimeSectionPtr left;		//each train remembers when started to adjust timetable
+	TimeSectionPtr start;		//each train remembers when started to adjust timetable
 private:
 	bool forwardDirection;
 	int passengers;
