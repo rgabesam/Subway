@@ -1,6 +1,6 @@
 pocetLinek pocetHodinProvozu
 idLinky pocetZastavek
-NemocniceMotol 3 () Mustek 9 ( 2 ) ....
-##comment##	zastavka frekvenceZastavky prestupy ... () odpovida neprestupove stanici a pokud je prestupova, pak ( 2 3 ) je mezi zavorakama a cisly mezera a cisla jsou id linek
 2500 5000 5500 4700 3800 1100 900 950
 ##comment##	 pocty cestujicich prepravenych v jednotlivych hodinach provozu
+NemocniceMotol 3 () Mustek 9 ( 2 ) ....
+##comment##	zastavka frekvenceZastavky prestupy ... () odpovida neprestupove stanici a pokud je prestupova, pak ( 2 3 ) je mezi zavorakama a cisly mezera a cisla jsou id linek
