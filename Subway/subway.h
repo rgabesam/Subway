@@ -5,6 +5,8 @@
 #include <set>
 #include <deque>
 
+#include "simulation.h"
+
 class Station;
 using StationPtr = std::shared_ptr<Station>;
 class Train;
@@ -48,13 +50,17 @@ private:
 
 class Train {
 public:
-	void MoveNext();
+	Train(int maxCapacity, TimeSectionPtr timeSection) : capacity(maxCapacity), left(timeSection), remainsToNext(2) {}
+	//void MoveNext();
 	int ReleasePassengers();
 	void AcceptPassengers(int value);
-	StationPtr current;
+	StationPtr next;
+	TimeSectionPtr left;		//each train remembers when started to adjust timetable
 private:
 	bool forwardDirection;
 	int passengers;
+	int capacity;
+	int remainsToNext;		//keeps how many minutes remains to the next stations
 };
 
 
