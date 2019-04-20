@@ -42,6 +42,8 @@ public:
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 private:
 	//int id;
+	int waiting;		//number of waiting passangers
+	int passengersPerMinute;		//how many passengers come every minute
 	int frequency;
 	bool transferStation;
 	std::string name;
