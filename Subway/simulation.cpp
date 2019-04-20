@@ -40,6 +40,10 @@ void Scheduler::GeneratePassengers()
 
 void Scheduler::MoveTrains()
 {
+	for (auto it = line->onTheWay.begin(); it != line->onTheWay.end(); it++)
+	{
+		(*it)->Move();
+	}
 }
 
 void Scheduler::AddTrains()

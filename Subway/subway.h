@@ -55,7 +55,7 @@ using TimeSectionPtr = std::shared_ptr<TimeSection>;
 class Train {
 public:
 	Train(int maxCapacity, TimeSectionPtr timeSection) : capacity(maxCapacity), start(timeSection), remainsToNext(2) {}
-	//void MoveNext();
+	void Move() { remainsToNext--; }
 	int ReleasePassengers();
 	void AcceptPassengers(int value);
 	StationPtr next;
