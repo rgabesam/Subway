@@ -16,11 +16,12 @@ using LinePtr = std::shared_ptr<Line>;
 
 class Line {
 public:
-	Line(int i, int num) : id(i), numberOfStations(num) {}
+	Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStations(num), amountOfPassangers(passangers) {}
 	int GetID() { return id; }
 	int GetnumberOfStations() { return numberOfStations; }
 	std::deque<StationPtr> stations;
 	std::deque<TrainPtr> onTheWay;
+	std::vector<int> amountOfPassangers;	//number of passengers transported in each hours on this line
 private:
 	int id;
 	int numberOfStations;
@@ -49,7 +50,8 @@ private:
 	std::string name;
 };
 
-
+class TimeSection;		//need to be declared because of translation
+using TimeSectionPtr = std::shared_ptr<TimeSection>;	
 class Train {
 public:
 	Train(int maxCapacity, TimeSectionPtr timeSection) : capacity(maxCapacity), left(timeSection), remainsToNext(2) {}
