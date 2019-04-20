@@ -32,7 +32,7 @@ class Station {
 public:
 	Station(std::string s, int freq, bool transf) : name(s), frequency(freq), transferStation(transf) {}
 	int AcceptPassengers(int value);
-	int GeneratePassengers();
+	int AddPassengers() { waiting += passengersPerMinute; }
 	int GetFrequency() { return frequency; }
 	//int GetID() { return id; }
 	std::string GetName(){ return name; }
@@ -41,10 +41,10 @@ public:
 	//StationPtr prev;
 	std::set<StationPtr> transfers;
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
+	int passengersPerMinute;		//how many passengers come every minute
 private:
 	//int id;
 	int waiting;		//number of waiting passangers
-	int passengersPerMinute;		//how many passengers come every minute
 	int frequency;
 	bool transferStation;
 	std::string name;
