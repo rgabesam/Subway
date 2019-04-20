@@ -1,4 +1,5 @@
 #include <sstream>
+#include <vector>
 
 #include "inputParser.h"
 
@@ -11,16 +12,17 @@ map<int, LinePtr> Parser::ParseInputFile()
 	ReadLine();
 	
 	int numberOfLines = stoi(ReadWorld());
+	int hours = stoi(ReadWorld());
 	for (int i = 0; i < numberOfLines; i++)
 	{
-		auto line = ParseSubwayLine();
+		auto line = ParseSubwayLine(hours);
 		subway.emplace(make_pair(line->GetID(), line));
 	}
 
 	return subway;
 }
 
-shared_ptr<Line> Parser::ParseSubwayLine()
+shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 {
 	ReadLine();
 	string s;
@@ -31,7 +33,14 @@ shared_ptr<Line> Parser::ParseSubwayLine()
 	s = ReadWorld();
 	int numberOfStations = stoi(s);
 
-	Line line(id, numberOfStations);
+	ReadLine();
+	vector<int> passangers;
+	for (int i = 0; i < hours; i++)
+	{
+		passangers.push_back(stoi(ReadWorld()));
+	}
+
+	Line line(id, numberOfStations, passangers);
 
 	ReadLine();
 	for (int i = 0; i < numberOfStations; i++)

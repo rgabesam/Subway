@@ -14,7 +14,7 @@ public:
 	Parser(std::string file) : fileName(file) { ifs = std::ifstream(file); }
 	std::map<int, LinePtr> ParseInputFile();
 private:
-	std::shared_ptr<Line> ParseSubwayLine();
+	std::shared_ptr<Line> ParseSubwayLine(int hours);
 	void ReadLine(); //put whole line into stringstream, and also clear whole ss
 	std::string ReadWorld();	//return one world of line or \n at the end
 	StationPtr ParseStation();
