@@ -3,6 +3,7 @@
 
 #include <string>
 #include <set>
+#include <map>
 #include <deque>
 
 #include "simulation.h"
@@ -18,12 +19,13 @@ const int stationsDistance = 2;
 
 class Line {
 public:
-	Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStations(num), amountOfPassangers(passangers) {}
+	Line(int i, int num, std::vector<int> passangers);
 	int GetID() { return id; }
 	int GetnumberOfStations() { return numberOfStations; }
 	std::deque<StationPtr> stations;
 	std::deque<TrainPtr> onTheWay;
 	std::vector<int> amountOfPassangers;	//number of passengers transported in each hours on this line
+	std::vector<int> probabilityMap;
 private:
 	int id;
 	int numberOfStations;
@@ -32,10 +34,9 @@ private:
 
 class Station {
 public:
-	Station(std::string s, int freq, bool transf) 
-		: name(s), frequency(freq), transferStation(transf), nextDistance(stationsDistance), prevDistance(stationsDistance), waiting(0) {}
+	Station(std::string s, int freq, bool transf, int numberOfStations);
 	int AcceptPassengers(int value);
-	void AddPassengers() { waiting += passengersPerMinute; }
+	void AddPassengers(std::vector<int> & probability);
 	int GetFrequency() { return frequency; }
 	int id;
 	std::string GetName(){ return name; }
@@ -48,11 +49,14 @@ public:
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 	int passengersPerMinute;		//how many passengers come every minute
 private:
-	int waiting;		//number of waiting passangers
+	//int waiting;		//number of waiting passangers
+	std::map<int, int> waiting;		//number of waiting passengers and their destination
 	int frequency;
 	bool transferStation;
 	std::string name;
 };
+
+
 
 class TimeSection;		//need to be declared because of translation
 using TimeSectionPtr = std::shared_ptr<TimeSection>;	
