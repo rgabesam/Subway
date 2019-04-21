@@ -14,6 +14,8 @@ using TrainPtr = std::shared_ptr<Train>;
 class Line;
 using LinePtr = std::shared_ptr<Line>;
 
+const int stationsDistance = 2;
+
 class Line {
 public:
 	Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStations(num), amountOfPassangers(passangers) {}
@@ -30,7 +32,8 @@ private:
 
 class Station {
 public:
-	Station(std::string s, int freq, bool transf) : name(s), frequency(freq), transferStation(transf) {}
+	Station(std::string s, int freq, bool transf) 
+		: name(s), frequency(freq), transferStation(transf), nextDistance(stationsDistance), prevDistance(stationsDistance) {}
 	int AcceptPassengers(int value);
 	void AddPassengers() { waiting += passengersPerMinute; }
 	int GetFrequency() { return frequency; }
@@ -38,7 +41,9 @@ public:
 	std::string GetName(){ return name; }
 	bool IsTransferStation() { return transferStation; }
 	StationPtr next;
+	int nextDistance;
 	StationPtr prev;
+	int prevDistance;
 	std::set<StationPtr> transfers;
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 	int passengersPerMinute;		//how many passengers come every minute
@@ -53,13 +58,13 @@ class TimeSection;		//need to be declared because of translation
 using TimeSectionPtr = std::shared_ptr<TimeSection>;	
 class Train {
 public:
-	Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation)
-		: capacity(maxCapacity), start(timeSection), remainsToNext(2), passengers(0), forwardDirection(forward), next(startingStation) {}
+	Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation, int distance)
+		: capacity(maxCapacity), start(timeSection), passengers(0), forwardDirection(forward), nextStation(startingStation), remainsToNext(distance) {}
 	void Move() { remainsToNext--; }
-	int ReleasePassengers();
-	void AcceptPassengers(int value);
-	//std::deque<StationPtr>::iterator next;
-	StationPtr next;
+	void PassangersOnOff();
+	bool MovingForward() { return forwardDirection; }
+	double GetPotential() { return (passengers / capacity); }
+	StationPtr nextStation;
 	TimeSectionPtr start;		//each train remembers when started to adjust timetable
 	int remainsToNext;		//keeps how many minutes remains to the next stations
 private:

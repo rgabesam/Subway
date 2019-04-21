@@ -13,8 +13,9 @@ int main() {
 	auto output = parser.ParseInputFile();
 	auto subway = output.second;
 	cout << "number of links is :" << subway.size() << endl;
-	cout << "subway is working " << output.first << " hours per day";
+	cout << "subway is working " << output.first << " hours per day" << endl;
 
+	
 	//string s;
 	//cin >> s;
 	return 0;
