@@ -74,7 +74,7 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 	return make_shared<Line>(line);
 }
 
-StationPtr Parser::ParseStation()
+StationPtr Parser::ParseStation(int numberOfStations)
 {
 	string name;
 	string s;
@@ -86,10 +86,10 @@ StationPtr Parser::ParseStation()
 
 	s = ReadWorld();
 	if (s == "()") {
-		return make_shared<Station>(Station(name, freq, false));
+		return make_shared<Station>(Station(name, freq, false, numberOfStations));
 	}
 
-	Station station(name, freq, true);	
+	Station station(name, freq, true, numberOfStations);
 	s = ReadWorld();
 	while (s != ")") {
 		station.transfersToResolve.emplace(stoi(s));
