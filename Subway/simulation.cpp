@@ -88,12 +88,12 @@ void Scheduler::ServiceTrains()
 				(*it)->start->potential = potential;
 
 			if ((*it)->MovingForward()) {		//setting next station
-				(*it)->remainsToNext = (*it)->nextStation->nextDistance;
-				(*it)->nextStation = (*it)->nextStation->next;
+				(*it)->remainsToNext = (*it)->station->nextDistance;
+				(*it)->station = (*it)->station->next;
 			}
 			else {
-				(*it)->remainsToNext = (*it)->nextStation->prevDistance;
-				(*it)->nextStation = (*it)->nextStation->prev;
+				(*it)->remainsToNext = (*it)->station->prevDistance;
+				(*it)->station = (*it)->station->prev;
 			}
 		}
 	}

@@ -4,7 +4,9 @@
 
 using namespace std;
 
-
+int RandomInt(int upperBound) {		//generate random int from 0 to upperBound
+	return (rand() % upperBound);
+}
 
 void Train::PassangersOnOff()
 {
@@ -52,6 +54,3 @@ Line::Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStation
 }
 
 
-int RandomInt(int upperBound) {		//generate random int from 0 to upperBound
-	return (rand() % upperBound);
-}
