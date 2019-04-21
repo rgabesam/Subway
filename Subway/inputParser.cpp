@@ -67,7 +67,7 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 	ReadLine();
 	for (int i = 0; i < numberOfStations; i++)
 	{
-		auto station = ParseStation();
+		auto station = ParseStation(numberOfStations);
 		line.stations.push_back(station);
 	}
 
