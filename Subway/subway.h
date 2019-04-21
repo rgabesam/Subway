@@ -34,7 +34,7 @@ public:
 	int AcceptPassengers(int value);
 	void AddPassengers() { waiting += passengersPerMinute; }
 	int GetFrequency() { return frequency; }
-	//int GetID() { return id; }
+	int id;
 	std::string GetName(){ return name; }
 	bool IsTransferStation() { return transferStation; }
 	StationPtr next;
@@ -43,7 +43,6 @@ public:
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 	int passengersPerMinute;		//how many passengers come every minute
 private:
-	//int id;
 	int waiting;		//number of waiting passangers
 	int frequency;
 	bool transferStation;

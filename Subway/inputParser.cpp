@@ -21,6 +21,7 @@ pair<int, map<int, LinePtr>> Parser::ParseInputFile()
 	//asigning of references between stations
 	for (auto it1 = subway.begin(); it1 != subway.end(); it1++)
 	{
+		int id = 1;
 		for (auto it2 = (*it1).second->stations.begin() ; it2 != (*it1).second->stations.end(); it2++)
 		{
 			if (it2 == (*it1).second->stations.begin()) {		//first station -> prev is null
@@ -35,6 +36,8 @@ pair<int, map<int, LinePtr>> Parser::ParseInputFile()
 				(*it2)->next = *(it2 + 1);
 				(*it2)->prev = *(it2 - 1);
 			}
+			(*it2)->id = id;		//setting id
+			id++;
 		}
 	}
 
