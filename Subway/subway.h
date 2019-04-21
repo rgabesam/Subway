@@ -48,9 +48,8 @@ public:
 	std::set<StationPtr> transfers;
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 	int passengersPerMinute;		//how many passengers come every minute
-private:
-	//int waiting;		//number of waiting passangers
 	std::map<int, int> waiting;		//number of waiting passengers and their destination
+private:
 	int frequency;
 	bool transferStation;
 	std::string name;
@@ -62,12 +61,12 @@ class TimeSection;		//need to be declared because of translation
 using TimeSectionPtr = std::shared_ptr<TimeSection>;	
 class Train {
 public:
-	Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation, int distance)
-		: capacity(maxCapacity), start(timeSection), passengersCount(0), forwardDirection(forward), station(startingStation), remainsToNext(distance) {}
+	Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation, int distance);
 	void Move() { remainsToNext--; }
 	void PassangersOnOff();
 	bool MovingForward() { return forwardDirection; }
 	double GetPotential() { return ((double)passengersCount / capacity); }
+	int FreeSpace() { return capacity - passengersCount; }
 	StationPtr station;
 	TimeSectionPtr start;		//each train remembers when started to adjust timetable
 	int remainsToNext;		//keeps how many minutes remains to the next stations

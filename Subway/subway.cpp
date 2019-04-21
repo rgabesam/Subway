@@ -1,12 +1,15 @@
 #include "subway.h"
 
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
 int RandomInt(int upperBound) {		//generate random int from 0 to upperBound
 	return (rand() % upperBound);
 }
+
+
 
 void Train::PassangersOnOff()
 {
@@ -16,6 +19,29 @@ void Train::PassangersOnOff()
 
 void Train::GetOn()
 {
+	int gettingOn;
+	if (forwardDirection) {			//just passengers to stations with id > this.station.id
+		for (int i = station->id + 1; i <= passengers.size(); i++)
+		{
+			gettingOn = min(FreeSpace(), station->waiting.at(i));
+			passengers.at(i) += gettingOn;
+			passengersCount += gettingOn;
+			station->waiting.at(i) -= gettingOn;
+			if (FreeSpace() == 0)
+				return;
+		}
+	}
+	else {
+		for (int i = station->id - 1; i >= 1; i--)
+		{
+			gettingOn = min(FreeSpace(), station->waiting.at(i));
+			passengers.at(i) += gettingOn;
+			passengersCount += gettingOn;
+			station->waiting.at(i) -= gettingOn;
+			if (FreeSpace() == 0)
+				return;
+		}
+	}
 }
 
 void Train::GetOff()
@@ -67,4 +93,11 @@ Line::Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStation
 	}
 }
 
-
+Train::Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation, int distance)
+	: capacity(maxCapacity), start(timeSection), passengersCount(0), forwardDirection(forward), station(startingStation), remainsToNext(distance) 
+{
+	for (int i = 1; i <= startingStation->waiting.size(); i++)
+	{
+		passengers.emplace(make_pair(i, 0));
+	}
+}
