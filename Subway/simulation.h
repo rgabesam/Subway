@@ -27,20 +27,11 @@ private:
 
 class Line;		//need to be declared because of translation
 using LinePtr = std::shared_ptr<Line>;		
+class Station;
+using StationPtr = std::shared_ptr<Station>;
 class Scheduler {
 public:
-	Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> sections)
-	: currentTime(0), line(currLine), timeSections(sections)
-	{ 
-		timeSectionsIt = timeSections.begin();
-		dayLength = hours * 60;
-		lastTrain = (*timeSectionsIt)->currentInterval;
-		frequencySum = 0;
-		for (auto it = line->stations.begin(); it != line->stations.end(); it++)
-		{
-			frequencySum = frequencySum + (*it)->GetFrequency();
-		}
-	}
+	Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> sections);
 	void SimulateMinute();
 	std::vector<TimeSectionPtr> timeSections;
 	std::vector<TimeSectionPtr>::iterator timeSectionsIt;
