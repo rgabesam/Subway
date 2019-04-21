@@ -63,18 +63,20 @@ using TimeSectionPtr = std::shared_ptr<TimeSection>;
 class Train {
 public:
 	Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation, int distance)
-		: capacity(maxCapacity), start(timeSection), passengers(0), forwardDirection(forward), station(startingStation), remainsToNext(distance) {}
+		: capacity(maxCapacity), start(timeSection), passengersCount(0), forwardDirection(forward), station(startingStation), remainsToNext(distance) {}
 	void Move() { remainsToNext--; }
 	void PassangersOnOff();
 	bool MovingForward() { return forwardDirection; }
-	double GetPotential() { return ((double)passengers / capacity); }
+	double GetPotential() { return ((double)passengersCount / capacity); }
 	StationPtr station;
 	TimeSectionPtr start;		//each train remembers when started to adjust timetable
 	int remainsToNext;		//keeps how many minutes remains to the next stations
 private:
-
+	void GetOn();
+	void GetOff();
 	bool forwardDirection;
-	int passengers;
+	int passengersCount;
+	std::map<int, int> passengers;		//number of waiting passengers and their destination
 	int capacity;
 	
 };
