@@ -33,7 +33,7 @@ private:
 class Station {
 public:
 	Station(std::string s, int freq, bool transf) 
-		: name(s), frequency(freq), transferStation(transf), nextDistance(stationsDistance), prevDistance(stationsDistance) {}
+		: name(s), frequency(freq), transferStation(transf), nextDistance(stationsDistance), prevDistance(stationsDistance), waiting(0) {}
 	int AcceptPassengers(int value);
 	void AddPassengers() { waiting += passengersPerMinute; }
 	int GetFrequency() { return frequency; }
@@ -63,11 +63,12 @@ public:
 	void Move() { remainsToNext--; }
 	void PassangersOnOff();
 	bool MovingForward() { return forwardDirection; }
-	double GetPotential() { return (passengers / capacity); }
+	double GetPotential() { return ((double)passengers / capacity); }
 	StationPtr nextStation;
 	TimeSectionPtr start;		//each train remembers when started to adjust timetable
 	int remainsToNext;		//keeps how many minutes remains to the next stations
 private:
+
 	bool forwardDirection;
 	int passengers;
 	int capacity;
