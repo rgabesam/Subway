@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 int main() {
 	Parser parser("input.txt");
 	auto output = parser.ParseInputFile();

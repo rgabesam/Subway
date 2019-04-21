@@ -18,7 +18,15 @@ int Station::AcceptPassengers(int value)
 
 void Station::AddPassengers(std::vector<int> & probability)
 {
-
+	int dest;
+	for (int i = 0; i < passengersPerMinute; i++)
+	{
+		dest = id;
+		while (dest == id) {
+			dest = probability[RandomInt(probability.size())];
+		}
+		waiting.at(id)++;
+	}
 }
 
 Station::Station(std::string s, int freq, bool transf, int numberOfStations)
@@ -41,4 +49,9 @@ Line::Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStation
 			probabilityMap.push_back(id);
 		}
 	}
+}
+
+
+int RandomInt(int upperBound) {		//generate random int from 0 to upperBound
+	return (rand() % upperBound);
 }
