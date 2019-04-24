@@ -17,6 +17,7 @@ Scheduler::Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> se
 	{
 		frequencySum = frequencySum + (*it)->GetFrequency();
 	}
+	endOfCurrentTimeSection = (*timeSectionsIt)->GetSectionLength() - 1;		//what time ends the first timeSection
 	
 }
 
@@ -26,13 +27,14 @@ void Scheduler::SimulateMinute()
 		DistributePassengers(line->amountOfPassangers[currentTime / 60]);		//setting of amount of generating passengers 
 	GeneratePassengers();		
 	MoveTrains();		
+	lastTrain++;
 	if (lastTrain == (*timeSectionsIt)->currentInterval) {
 		lastTrain = 0;
 		AddTrains();
 	}
-	else {
-		lastTrain++;
-	}
+	//else {
+	//	//lastTrain++;
+	//}
 	ServiceTrains();
 
 	currentTime++;
@@ -87,7 +89,8 @@ void Scheduler::ServiceTrains()
 			if (potential > (*it)->start->potential)
 				(*it)->start->potential = potential;
 
-			if ((*it)->MovingForward()) {		//setting next station
+			//setting next station
+			if ((*it)->MovingForward()) {		//there is difference between trains with different direction		
 				(*it)->remainsToNext = (*it)->station->nextDistance;
 				(*it)->station = (*it)->station->next;
 			}
@@ -102,4 +105,5 @@ void Scheduler::ServiceTrains()
 void Scheduler::ScheduleNextTimeSection()
 {
 	timeSectionsIt++;
+	endOfCurrentTimeSection += (*timeSectionsIt)->GetSectionLength();		//what time ends new scheduled time section
 }
