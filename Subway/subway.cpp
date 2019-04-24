@@ -79,14 +79,7 @@ Station::Station(std::string s, int freq, bool transf, int numberOfStations)
 
 Line::Line(int i, int num, std::vector<int> passangers) : id(i), numberOfStations(num), amountOfPassangers(passangers) 
 {
-	for (auto it = stations.begin(); it != stations.end(); it++)
-	{
-		int id = (*it)->id;
-		for (int i = 0; i < (*it)->GetFrequency(); i++)
-		{
-			probabilityMap.push_back(id);
-		}
-	}
+	
 }
 
 Train::Train(int maxCapacity, TimeSectionPtr timeSection, bool forward, StationPtr startingStation, int distance)

@@ -71,6 +71,15 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 		line.stations.push_back(station);
 	}
 
+	for (auto it = line.stations.begin(); it != line.stations.end(); it++)
+	{
+		int id = (*it)->id;
+		for (int i = 0; i < (*it)->GetFrequency(); i++)
+		{
+			line.probabilityMap.push_back(id);
+		}
+	}
+
 	return make_shared<Line>(line);
 }
 
