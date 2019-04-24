@@ -15,7 +15,7 @@ using TimeSectionPtr = std::shared_ptr<TimeSection>;
 
 class TimeSection {
 public:
-	TimeSection(int length) : sectionLength(length) {}
+	TimeSection(int length, int startingInterval) : sectionLength(length), currentInterval(startingInterval) , potential(0) {}
 	int GetSectionLength() { return sectionLength; }
 	double potential;		//real number between 0 and 1  ... if potential ==1 it means that in concreate time section is at least one train crowded
 	int currentInterval;		//holds gap in minutes between trains 
@@ -35,7 +35,7 @@ public:
 	void SimulateMinute();
 	std::vector<TimeSectionPtr> timeSections;
 	std::vector<TimeSectionPtr>::iterator timeSectionsIt;
-	bool IsEnd() { return (currentTime == dayLength); }
+	bool IsEnd() { return (currentTime + 1 == dayLength); }
 private:
 	void DistributePassengers(int passengers);		//at the begining of each hour distribute number of passengers to each line depending on the frequency of the station
 	void GeneratePassengers();		//each minute add fraction of passengers to each station

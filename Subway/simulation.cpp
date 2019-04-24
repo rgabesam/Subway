@@ -39,7 +39,7 @@ void Scheduler::SimulateMinute()
 
 	currentTime++;
 
-	if (currentTime == endOfCurrentTimeSection)
+	if (currentTime == endOfCurrentTimeSection && !IsEnd())
 		ScheduleNextTimeSection();
 }
 

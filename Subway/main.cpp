@@ -17,7 +17,6 @@ int main() {
 	cout << "subway is working " << output.first << " hours per day" << endl;
 	
 	
-	
 	//string s;
 	//cin >> s;
 	return 0;
