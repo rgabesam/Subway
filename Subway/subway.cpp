@@ -53,10 +53,6 @@ void Train::GetOff()
 }
 
 
-int Station::AcceptPassengers(int value)
-{
-	return 0;
-}
 
 void Station::AddPassengers(std::vector<int> & probability)
 {
