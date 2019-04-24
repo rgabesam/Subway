@@ -93,10 +93,14 @@ void Scheduler::ServiceTrains()
 			if ((*it)->MovingForward()) {		//there is difference between trains with different direction		
 				(*it)->remainsToNext = (*it)->station->nextDistance;
 				(*it)->station = (*it)->station->next;
+				if ((*it)->station == NULL)			//removing trains at the last station
+					it = line->onTheWay.erase(it);
 			}
 			else {
 				(*it)->remainsToNext = (*it)->station->prevDistance;
 				(*it)->station = (*it)->station->prev;
+				if ((*it)->station == NULL)			//removing trains at the last station
+					it = line->onTheWay.erase(it);
 			}
 		}
 	}
