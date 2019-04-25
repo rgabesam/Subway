@@ -49,7 +49,7 @@ void Train::GetOff()
 {
 	int stationID = station->id;
 	int leaving = passengers.at(stationID);
-	
+	cout << leaving << " passengers just arrived to " << station->GetName();
 	passengersCount -= leaving;
 	passengers.at(stationID) = 0;
 }
@@ -65,7 +65,7 @@ void Station::AddPassengers(std::vector<int> & probability)
 		while (dest == id) {
 			dest = probability[RandomInt(probability.size())];
 		}
-		waiting.at(id)++;
+		waiting.at(dest)++;
 	}
 }
 

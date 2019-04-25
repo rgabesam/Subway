@@ -18,7 +18,7 @@ pair<int, map<int, LinePtr>> Parser::ParseInputFile()
 		subway.emplace(make_pair(line->GetID(), line));
 	}
 
-	//asigning of references between stations
+	//asigning of references between stations and ids
 	for (auto it1 = subway.begin(); it1 != subway.end(); it1++)
 	{
 		int id = 1;
@@ -38,6 +38,18 @@ pair<int, map<int, LinePtr>> Parser::ParseInputFile()
 			}
 			(*it2)->id = id;		//setting id
 			id++;
+		}
+	}
+
+	for (auto it = subway.begin(); it != subway.end(); it++)
+	{
+		for (auto it2 = (*it).second->stations.begin(); it2 != (*it).second->stations.end(); it2++)
+		{
+			int id = (*it2)->id;
+			for (int i = 0; i < (*it2)->GetFrequency(); i++)
+			{
+				(*it).second->probabilityMap.push_back(id);
+			}
 		}
 	}
 
@@ -71,14 +83,7 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 		line.stations.push_back(station);
 	}
 
-	for (auto it = line.stations.begin(); it != line.stations.end(); it++)
-	{
-		int id = (*it)->id;
-		for (int i = 0; i < (*it)->GetFrequency(); i++)
-		{
-			line.probabilityMap.push_back(id);
-		}
-	}
+	
 
 	return make_shared<Line>(line);
 }
