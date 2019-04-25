@@ -9,15 +9,15 @@ const int trainCapacity = 220;
 
 Scheduler::Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> sections) : currentTime(0), line(currLine), timeSections(sections)
 {
-	timeSectionsIt = timeSections.begin();
+	timeSectionsIndex = 0;
 	dayLength = hours * 60;
-	lastTrain = (*timeSectionsIt)->currentInterval;
+	lastTrain = timeSections.at(timeSectionsIndex)->currentInterval;
 	frequencySum = 0;
 	for (auto it = line->stations.begin(); it != line->stations.end(); it++)
 	{
 		frequencySum = frequencySum + (*it)->GetFrequency();
 	}
-	endOfCurrentTimeSection = (*timeSectionsIt)->GetSectionLength() - 1;		//what time ends the first timeSection
+	endOfCurrentTimeSection = timeSections.at(timeSectionsIndex)->GetSectionLength() - 1;		//what time ends the first timeSection
 	
 }
 
@@ -28,7 +28,7 @@ void Scheduler::SimulateMinute()
 	GeneratePassengers();		
 	MoveTrains();		
 	lastTrain++;
-	if (lastTrain == (*timeSectionsIt)->currentInterval) {
+	if (lastTrain == timeSections.at(timeSectionsIndex)->currentInterval) {
 		lastTrain = 0;
 		AddTrains();
 	}
@@ -70,8 +70,8 @@ void Scheduler::MoveTrains()
 
 void Scheduler::AddTrains()
 {
-	Train t1(trainCapacity, *timeSectionsIt, true, line->stations.front(), line->stations.front()->nextDistance);
-	Train t2(trainCapacity, *timeSectionsIt, false, line->stations.back(), line->stations.back()->prevDistance);
+	Train t1(trainCapacity, timeSections.at(timeSectionsIndex), true, line->stations.front(), line->stations.front()->nextDistance);
+	Train t2(trainCapacity, timeSections.at(timeSectionsIndex), false, line->stations.back(), line->stations.back()->prevDistance);
 
 	line->onTheWay.push_front(make_shared<Train>(t1));
 	line->onTheWay.push_back(make_shared<Train>(t2));
@@ -108,6 +108,6 @@ void Scheduler::ServiceTrains()
 
 void Scheduler::ScheduleNextTimeSection()
 {
-	timeSectionsIt++;
-	endOfCurrentTimeSection += (*timeSectionsIt)->GetSectionLength();		//what time ends new scheduled time section
+	timeSectionsIndex++;
+	endOfCurrentTimeSection += timeSections.at(timeSectionsIndex)->GetSectionLength();		//what time ends new scheduled time section
 }

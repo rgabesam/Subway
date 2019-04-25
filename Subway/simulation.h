@@ -34,7 +34,8 @@ public:
 	Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> sections);
 	void SimulateMinute();
 	std::vector<TimeSectionPtr> timeSections;
-	std::vector<TimeSectionPtr>::iterator timeSectionsIt;
+	//std::vector<TimeSectionPtr>::iterator timeSectionsIt;
+	int timeSectionsIndex;
 	bool IsEnd() { return (currentTime + 1 == dayLength); }
 private:
 	void DistributePassengers(int passengers);		//at the begining of each hour distribute number of passengers to each line depending on the frequency of the station

@@ -14,7 +14,7 @@ void SimulateDay(vector<SchedulerPtr> schedulers, int dayLength /*in minutes*/) 
 	for (int i = 0; i < dayLength; i++)
 	{
 		cout << "Simulating minute number " << i + 1 << " of " << dayLength << endl;
-		for (schedulersIt = schedulers.begin(); schedulersIt != schedulers.end(); i++)
+		for (schedulersIt = schedulers.begin(); schedulersIt != schedulers.end(); schedulersIt++)
 		{
 			(*schedulersIt)->SimulateMinute();
 		}

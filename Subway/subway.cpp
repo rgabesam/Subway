@@ -2,6 +2,7 @@
 
 #include <map>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -48,6 +49,7 @@ void Train::GetOff()
 {
 	int stationID = station->id;
 	int leaving = passengers.at(stationID);
+	
 	passengersCount -= leaving;
 	passengers.at(stationID) = 0;
 }
