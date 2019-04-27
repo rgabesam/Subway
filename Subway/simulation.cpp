@@ -22,6 +22,14 @@ Scheduler::Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> se
 	
 }
 
+void Scheduler::AnulateScheduler() 
+{
+	currentTime = 0;
+	timeSectionsIndex = 0;
+	lastTrain = timeSections.at(timeSectionsIndex)->currentInterval;
+	endOfCurrentTimeSection = timeSections.at(timeSectionsIndex)->GetSectionLength() - 1;
+}
+
 void Scheduler::SimulateMinute()
 {
 	if (currentTime % 60 == 0)				

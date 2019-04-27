@@ -33,6 +33,7 @@ class Scheduler {
 public:
 	Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> sections);
 	void SimulateMinute();
+	void AnulateScheduler();		//anulate all values make the scheduler ready to simulate another day
 	std::vector<TimeSectionPtr> timeSections;
 	//std::vector<TimeSectionPtr>::iterator timeSectionsIt;
 	int timeSectionsIndex;
