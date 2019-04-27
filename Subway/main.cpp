@@ -8,6 +8,8 @@
 
 using namespace std;
 
+const int startingInterval = 5;
+
 
 void SimulateDay(vector<SchedulerPtr> schedulers, int dayLength /*in minutes*/) {
 	auto schedulersIt = schedulers.begin();
@@ -21,6 +23,39 @@ void SimulateDay(vector<SchedulerPtr> schedulers, int dayLength /*in minutes*/) 
 	}
 }
 
+/*
+mode = 1 means that interval is changed just by 1 minute
+mode = 2 means that interval is changed * or / 2
+increse = true -> interval is increasing
+increse = false -> interval is decreasing
+*/
+void ChangeIntervals(TimeSectionPtr toChange, const int mode, const bool increase) {
+	if (increase) {
+		switch (mode) {
+		case 1:
+			toChange->currentInterval++;
+			break;
+		case 2:
+			toChange->currentInterval *= 2;
+			break;
+		}
+	}
+	else {
+		switch (mode) {
+		case 1:
+			toChange->currentInterval--;
+			break;
+		case 2:
+			if (toChange->currentInterval % 2 == 0)
+				toChange->currentInterval /= 2;
+			else
+				toChange->currentInterval = toChange->currentInterval / 2 + 1;
+			break;
+		}
+	}
+}
+
+
 
 int main() {
 	Parser parser("input.txt");
@@ -30,9 +65,12 @@ int main() {
 	cout << "subway is working " << output.first << " hours per day" << endl;
 	
 	vector<SchedulerPtr> schedulers;
-	TimeSection section(output.first * 60, 1);
+	//TimeSection section(output.first * 30, 1);
+	TimeSection section(output.first * 60, startingInterval);
 	vector<TimeSectionPtr> sections;
 	sections.push_back(make_shared<TimeSection>(section));
+	//section = TimeSection(output.first * 30, 2);
+	//sections.push_back(make_shared<TimeSection>(section));
 	for (auto it = subway.begin(); it != subway.end(); it++)
 	{
 		Scheduler sch(output.first, (*it).second, sections);
