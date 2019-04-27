@@ -5,7 +5,8 @@
 
 using namespace std;
 
-const int trainCapacity = 220;
+const int trainCapacity = 1464;		//https://metroweb.cz/metro/M1/M1.htm	...souprava M1 v Praze
+//const int trainCapacity = 1526		//https://metroweb.cz/metro/metro/stanice/linka_a.htm		...souprava 81–71M
 
 Scheduler::Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> sections) : currentTime(0), line(currLine), timeSections(sections)
 {
@@ -27,14 +28,13 @@ void Scheduler::SimulateMinute()
 		DistributePassengers(line->amountOfPassangers[currentTime / 60]);		//setting of amount of generating passengers 
 	GeneratePassengers();		
 	MoveTrains();		
-	lastTrain++;
+	
 	if (lastTrain == timeSections.at(timeSectionsIndex)->currentInterval) {
 		lastTrain = 0;
 		AddTrains();
 	}
-	//else {
-	//	//lastTrain++;
-	//}
+	lastTrain++;
+	
 	ServiceTrains();
 
 	currentTime++;
@@ -75,6 +75,10 @@ void Scheduler::AddTrains()
 
 	line->onTheWay.push_front(make_shared<Train>(t1));
 	line->onTheWay.push_back(make_shared<Train>(t2));
+
+	//cout << "		just started new train at " << line->stations.front()->GetName() << endl;
+	//cout << "		just started new train at " << line->stations.back()->GetName() << endl;
+
 }
 
 void Scheduler::ServiceTrains()
@@ -86,6 +90,8 @@ void Scheduler::ServiceTrains()
 
 			//setting the potential of the time section
 			double potential = (*it)->GetPotential();
+			if (potential == 1)
+				cout << "---------WARNING: POTENTIAL = 1---------" << endl;
 			if (potential > (*it)->start->potential)
 				(*it)->start->potential = potential;
 

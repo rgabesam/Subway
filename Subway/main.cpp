@@ -30,7 +30,7 @@ int main() {
 	cout << "subway is working " << output.first << " hours per day" << endl;
 	
 	vector<SchedulerPtr> schedulers;
-	TimeSection section(output.first * 60, 10);
+	TimeSection section(output.first * 60, 1);
 	vector<TimeSectionPtr> sections;
 	sections.push_back(make_shared<TimeSection>(section));
 	for (auto it = subway.begin(); it != subway.end(); it++)

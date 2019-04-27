@@ -49,7 +49,7 @@ void Train::GetOff()
 {
 	int stationID = station->id;
 	int leaving = passengers.at(stationID);
-	cout << leaving << " passengers just arrived to " << station->GetName();
+	//cout << "	" << leaving << " passengers just arrived to " << station->GetName() << endl;
 	passengersCount -= leaving;
 	passengers.at(stationID) = 0;
 }
