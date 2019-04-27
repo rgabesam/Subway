@@ -55,7 +55,30 @@ void ChangeIntervals(TimeSectionPtr toChange, const int mode, const bool increas
 	}
 }
 
-
+vector<TimeSectionPtr>& SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
+	vector<TimeSectionPtr> newSections;
+	for (auto it = oldSections.begin(); it != oldSections.end(); it++)
+	{
+		if ((*it)->GetSectionLength() >= (*it)->currentInterval * 2) {
+			int half = (*it)->GetSectionLength() / 2;
+			if ((*it)->GetSectionLength() % 2 == 0) {
+				TimeSection section(half, (*it)->currentInterval);
+				newSections.push_back(make_shared<TimeSection>(section));
+				newSections.push_back(make_shared<TimeSection>(section));
+			}
+			else {
+				TimeSection section(half, (*it)->currentInterval);
+				newSections.push_back(make_shared<TimeSection>(section));
+				section = TimeSection(half + 1, (*it)->currentInterval);	//because odd int divided by two is rounded down
+				newSections.push_back(make_shared<TimeSection>(section));
+			}
+		}
+		else {
+			newSections.push_back(*it);
+		}
+	}
+	return newSections;
+}
 
 int main() {
 	Parser parser("input.txt");
