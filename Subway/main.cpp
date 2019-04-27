@@ -11,7 +11,8 @@ using namespace std;
 const int startingInterval = 5;
 
 
-void SimulateDay(vector<SchedulerPtr> schedulers, int dayLength /*in minutes*/) {
+
+void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/) {
 	auto schedulersIt = schedulers.begin();
 	for (int i = 0; i < dayLength; i++)
 	{
@@ -74,6 +75,7 @@ vector<TimeSectionPtr>& SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
 			}
 		}
 		else {
+			(*it)->finalLook = true;		//cannot be splitted and changed interval
 			newSections.push_back(*it);
 		}
 	}
