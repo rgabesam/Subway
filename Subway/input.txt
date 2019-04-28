@@ -1,7 +1,7 @@
-2 8
+2 2
 1 17
-21000 45000 48000 39000 29000 18000 35000 10500
+21000 45000 
 NemocniceMotol 3 () Petriny 4 () NadraziVeleslavin 5 () Borislavka 5 () Dejvicka 7 () Hradcanska 6 () Malostranska 6 () Staromestska 6 () Mustek 9 ( 2 ) Muzeum 9 () NamestiMiru 7 () JirihoZPodebrad 6 () Flora 7 () Zelivskeho 6 () Strasnicka 6 () Skalka 5 () DepoHostivar 4 () 
 2 24
-9000 35000 37000 30000 18000 7000 4000 4500
+8000 15492 
 Zlicin 4 () Stodulky 2 () Luka 2 () Luziny 3 () Hurka 3 () NoveButovice 6 () Jinonice 2 () Radlicka 3 () SmichovskeNadrazi 7 () Andel 9 () KarlovoNamesti 7 () NarodniTrida 7 () Mustek 8 ( 1 ) NamestiRepubliky 6 () Florenc 9 () Krizikova 6 () Invalidovna 5 () Palmovka 5 () Ceskomoravska 5 () Vysocanska 4 () Kolbenova 4 () Hloubetin 3 () RajskaZahrada 3 () CernyMost 4 () 

@@ -8,15 +8,19 @@
 
 using namespace std;
 
-const int startingInterval = 5;
-
+const int startingInterval = 20;
 
 
 void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/) {
 	auto schedulersIt = schedulers.begin();
+	cout << "Day simulation started with:" << endl;
+	for (auto it = schedulers.begin(); it != schedulers.end(); it++)
+	{
+		cout << "	" << (*it)->timeSections.size() << " time sections" << endl;
+	}
 	for (int i = 0; i < dayLength; i++)
 	{
-		cout << "Simulating minute number " << i + 1 << " of " << dayLength << endl;
+		//cout << "Simulating minute number " << i + 1 << " of " << dayLength << endl;
 		for (schedulersIt = schedulers.begin(); schedulersIt != schedulers.end(); schedulersIt++)
 		{
 			(*schedulersIt)->SimulateMinute();
@@ -30,7 +34,7 @@ mode = 2 means that interval is changed * or / 2
 increse = true -> interval is increasing
 increse = false -> interval is decreasing
 */
-void ChangeIntervals(TimeSectionPtr toChange, const int mode, const bool increase) {
+void ChangeInterval(TimeSectionPtr toChange, const int mode, const bool increase) {
 	if (increase) {
 		switch (mode) {
 		case 1:
@@ -54,9 +58,10 @@ void ChangeIntervals(TimeSectionPtr toChange, const int mode, const bool increas
 			break;
 		}
 	}
+	toChange->potential = 0;
 }
 
-vector<TimeSectionPtr>& SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
+shared_ptr< vector<TimeSectionPtr>> SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
 	vector<TimeSectionPtr> newSections;
 	for (auto it = oldSections.begin(); it != oldSections.end(); it++)
 	{
@@ -79,7 +84,51 @@ vector<TimeSectionPtr>& SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
 			newSections.push_back(*it);
 		}
 	}
-	return newSections;
+	return make_shared< vector<TimeSectionPtr>>(newSections);
+}
+
+//upperBound and lowerBound are bounds of used potential of trains, they are between 0 and 1 according to percents
+void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/, double upperBound, double lowerBound) {
+	bool ready = false;
+	while (!ready)
+	{
+		bool readyToSplit = false;
+		while (!readyToSplit) {
+			readyToSplit = true;		//if any time sections interval is changed readyToSplit is set to false;
+			for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++) {
+				(*sIt)->AnulateScheduler();
+			}
+			SimulateDay(schedulers, dayLength);
+			for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++)//foreach scheduler ~ foreach line
+			{
+				for (auto tIt = (*sIt)->timeSections.begin(); tIt != (*sIt)->timeSections.end(); tIt++)	//foreach time section
+				{
+					if (!(*tIt)->finalLook) {
+						if ((*tIt)->potential > upperBound) {
+							ChangeInterval((*tIt), 2, false);
+							readyToSplit = false;
+						}
+						else if ((*tIt)->potential < lowerBound) {
+							ChangeInterval((*tIt), 1, true);
+							readyToSplit = false;
+						}
+						
+					}
+				}
+			}
+		}
+
+		ready = true; //if any time section is splitted ready is set to false;
+		for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++)//foreach scheduler ~ foreach line
+		{
+			auto newSections = *(SplitTimeSections((*sIt)->timeSections));
+			if (newSections.size() != (*sIt)->timeSections.size())
+				ready = false;
+			(*sIt)->timeSections = newSections;
+		}
+		
+		
+	}
 }
 
 int main() {
@@ -88,20 +137,22 @@ int main() {
 	auto subway = output.second;
 	cout << "number of links is :" << subway.size() << endl;
 	cout << "subway is working " << output.first << " hours per day" << endl;
+
 	
 	vector<SchedulerPtr> schedulers;
 	//TimeSection section(output.first * 30, 1);
-	TimeSection section(output.first * 60, startingInterval);
-	vector<TimeSectionPtr> sections;
-	sections.push_back(make_shared<TimeSection>(section));
+	
 	//section = TimeSection(output.first * 30, 2);
 	//sections.push_back(make_shared<TimeSection>(section));
 	for (auto it = subway.begin(); it != subway.end(); it++)
 	{
+		TimeSection section(output.first * 60, startingInterval);
+		vector<TimeSectionPtr> sections;
+		sections.push_back(make_shared<TimeSection>(section));
 		Scheduler sch(output.first, (*it).second, sections);
 		schedulers.push_back(make_shared<Scheduler>(sch));
 	}
-	SimulateDay(schedulers, output.first * 60);
+	CreateTimeTable(schedulers, output.first * 60, 0.85, 0.25);
 	//string s;
 	//cin >> s;
 	return 0;

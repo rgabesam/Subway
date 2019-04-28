@@ -117,6 +117,10 @@ void Scheduler::ServiceTrains()
 					it = line->onTheWay.erase(it);
 			}
 		}
+
+		if (it == line->onTheWay.end())		
+			break;
+		//just protection for case when it erase the last train which is last in the deque so iterator is end() ..then it would crash if it tried to increment iterator
 	}
 }
 
