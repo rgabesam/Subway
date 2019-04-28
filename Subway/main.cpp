@@ -28,48 +28,39 @@ void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/)
 	}
 }
 
-/*
-mode = 1 means that interval is changed just by 1 minute
-mode = 2 means that interval is changed * or / 2
-increse = true -> interval is increasing
-increse = false -> interval is decreasing
-*/
-void ChangeInterval(TimeSectionPtr toChange, const int mode, const bool increase) {
-	if (increase) {
-		switch (mode) {
-		case 1:
-			toChange->currentInterval++;
-			break;
-		case 2:
-			toChange->currentInterval *= 2;
-			break;
-		}
+
+void IncreaseInterval(TimeSectionPtr toChange, const double lowerBound) {
+	if (lowerBound > toChange->potential * 2 && toChange->GetSectionLength() >= toChange->currentInterval * 2)
+		toChange->currentInterval *= 2;
+	else
+		toChange->currentInterval++;
+	
+}
+
+void DecreaseInterval(TimeSectionPtr toChange) {
+	//becasue potential is never bigger than 1 i will always take a half of interval (or half+1, when origin is odd)
+	if (toChange->currentInterval == 1) {
+		
+		toChange->state = 3;
+		return;
 	}
-	else {
-		switch (mode) {
-		case 1:
-			toChange->currentInterval--;
-			break;
-		case 2:
-			if (toChange->currentInterval % 2 == 0)
-				toChange->currentInterval /= 2;
-			else
-				toChange->currentInterval = toChange->currentInterval / 2 + 1;
-			break;
-		}
-	}
-	toChange->potential = 0;
+	if (toChange->currentInterval % 2 == 0)
+		toChange->currentInterval /= 2;
+	else
+		toChange->currentInterval = toChange->currentInterval / 2 + 1;
 }
 
 shared_ptr< vector<TimeSectionPtr>> SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
 	vector<TimeSectionPtr> newSections;
 	for (auto it = oldSections.begin(); it != oldSections.end(); it++)
 	{
+		
 		if ((*it)->GetSectionLength() >= (*it)->currentInterval * 2) {
 			int half = (*it)->GetSectionLength() / 2;
 			if ((*it)->GetSectionLength() % 2 == 0) {
-				TimeSection section(half, (*it)->currentInterval);
+				TimeSection section(half, (*it)->currentInterval);		//new timesections has got by default state = 0
 				newSections.push_back(make_shared<TimeSection>(section));
+				section = TimeSection(half, (*it)->currentInterval);
 				newSections.push_back(make_shared<TimeSection>(section));
 			}
 			else {
@@ -80,11 +71,56 @@ shared_ptr< vector<TimeSectionPtr>> SplitTimeSections(vector<TimeSectionPtr>& ol
 			}
 		}
 		else {
-			(*it)->finalLook = true;		//cannot be splitted and changed interval
-			newSections.push_back(*it);
+			TimeSection section((*it)->GetSectionLength(), (*it)->currentInterval);
+			section.finalLook= true;		//cannot be splitted and changed interval
+			section.state = 0;		//anulating state of interval correction automat
+			newSections.push_back(make_shared<TimeSection>(section));
 		}
 	}
 	return make_shared< vector<TimeSectionPtr>>(newSections);
+}
+
+void IntervalCorrectionAutomat(TimeSectionPtr toChange, bool increase, const double upperBound, const double lowerBound) {
+	if (increase) {
+		switch (toChange->state) {
+		case -1:
+			toChange->state = 2;
+			break;
+		case -2:
+			toChange->state = 3;	//final state
+			break;
+		case 0 :
+			toChange->state = 1;
+			break;
+		case 1://does not change state...stay in current state
+			break;
+		case 2://does not change state...stay in current state
+			break;
+		}
+		IncreaseInterval(toChange, lowerBound);		//need only lowerBound	(currentPotential...lower...upper)
+		
+	}
+	else {
+		switch (toChange->state) {
+		case -1://does not change state...stay in current state
+			break;
+		case -2://does not change state...stay in current state
+			break;
+		case 0:
+			toChange->state = -1;
+			break;
+		case 1:
+			toChange->state = -2;
+			break;
+		case 2:
+			toChange->state = 3; //final state
+			break;
+		}
+		DecreaseInterval(toChange);		//need only upperBound	(lower...upper...currentPotential)
+		
+	}
+	toChange->potential = 0;
+	
 }
 
 //upperBound and lowerBound are bounds of used potential of trains, they are between 0 and 1 according to percents
@@ -103,14 +139,22 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 			{
 				for (auto tIt = (*sIt)->timeSections.begin(); tIt != (*sIt)->timeSections.end(); tIt++)	//foreach time section
 				{
-					if (!(*tIt)->finalLook) {
+					if (!(*tIt)->finalLook && (*tIt)->state != 3) {
+						//state corresponds with IntervalCorrectionAutomat where 3 means that interval was already decresead and increased or reversly
 						if ((*tIt)->potential > upperBound) {
-							ChangeInterval((*tIt), 2, false);
+							IntervalCorrectionAutomat((*tIt), false, upperBound, lowerBound);
 							readyToSplit = false;
 						}
 						else if ((*tIt)->potential < lowerBound) {
-							ChangeInterval((*tIt), 1, true);
+							if ((*tIt)->currentInterval == (*tIt)->GetSectionLength())	//case when count of passengers is so low that even interval big as time section is not enough to pass to bound
+								(*tIt)->state = 3;
+							else
+								IntervalCorrectionAutomat((*tIt), true, upperBound, lowerBound);
+							
 							readyToSplit = false;
+						}
+						else {
+							(*tIt)->state = 3;		//when the sections interval is well set 
 						}
 						
 					}
@@ -129,6 +173,10 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 		
 		
 	}
+	for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++) {
+		(*sIt)->AnulateScheduler();
+	}
+	SimulateDay(schedulers, dayLength);
 }
 
 int main() {
@@ -152,7 +200,7 @@ int main() {
 		Scheduler sch(output.first, (*it).second, sections);
 		schedulers.push_back(make_shared<Scheduler>(sch));
 	}
-	CreateTimeTable(schedulers, output.first * 60, 0.85, 0.25);
+	CreateTimeTable(schedulers, output.first * 60, 0.9, 0.75);
 	//string s;
 	//cin >> s;
 	return 0;

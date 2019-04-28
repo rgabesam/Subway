@@ -15,11 +15,12 @@ using TimeSectionPtr = std::shared_ptr<TimeSection>;
 
 class TimeSection {
 public:
-	TimeSection(int length, int startingInterval) : sectionLength(length), currentInterval(startingInterval) , potential(0), finalLook(false) {}
+	TimeSection(int length, int startingInterval) : sectionLength(length), currentInterval(startingInterval) , potential(0), finalLook(false), state(0) {}
 	int GetSectionLength() { return sectionLength; }
 	double potential;		//real number between 0 and 1  ... if potential ==1 it means that in concreate time section is at least one train crowded
 	int currentInterval;		//holds gap in minutes between trains 
 	bool finalLook;			//while(false) timeSection can be modified in terms of interval and spliting
+	int state;			//to protect against cycles when adjusting cycles
 private:
 	int sectionLength;		//in minutes
 };

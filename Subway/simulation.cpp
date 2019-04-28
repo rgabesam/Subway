@@ -37,7 +37,11 @@ void Scheduler::SimulateMinute()
 	GeneratePassengers();		
 	MoveTrains();		
 	
-	if (lastTrain == timeSections.at(timeSectionsIndex)->currentInterval) {
+	if (lastTrain >= timeSections.at(timeSectionsIndex)->currentInterval) {		
+		/*
+		unequality is there for case when previous time section had bigger interval than current and 
+		lastTrain is already bigger than interval of current time section
+		*/
 		lastTrain = 0;
 		AddTrains();
 	}
@@ -98,8 +102,8 @@ void Scheduler::ServiceTrains()
 
 			//setting the potential of the time section
 			double potential = (*it)->GetPotential();
-			if (potential == 1)
-				cout << "---------WARNING: POTENTIAL = 1---------" << endl;
+			//if (potential == 1)
+			//	cout << "---------WARNING: POTENTIAL = 1---------" << endl;
 			if (potential > (*it)->start->potential)
 				(*it)->start->potential = potential;
 
@@ -126,6 +130,8 @@ void Scheduler::ServiceTrains()
 
 void Scheduler::ScheduleNextTimeSection()
 {
+	if (timeSections.at(timeSectionsIndex)->potential == 0)
+		cout << "ajeje" << endl;
 	timeSectionsIndex++;
 	endOfCurrentTimeSection += timeSections.at(timeSectionsIndex)->GetSectionLength();		//what time ends new scheduled time section
 }
