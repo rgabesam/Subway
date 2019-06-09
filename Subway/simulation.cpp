@@ -130,8 +130,7 @@ void Scheduler::ServiceTrains()
 
 void Scheduler::ScheduleNextTimeSection()
 {
-	if (timeSections.at(timeSectionsIndex)->potential == 0)
-		cout << "ajeje" << endl;
+	
 	timeSectionsIndex++;
 	endOfCurrentTimeSection += timeSections.at(timeSectionsIndex)->GetSectionLength();		//what time ends new scheduled time section
 }
