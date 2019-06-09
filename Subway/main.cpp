@@ -9,6 +9,11 @@
 using namespace std;
 
 const int startingInterval = 20;
+const string inputFile = "input_2h.txt";
+const double lower = 0.7;
+const double upper = 0.9;
+
+
 
 
 void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/) {
@@ -180,7 +185,7 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 }
 
 int main() {
-	Parser parser("input.txt");
+	Parser parser(inputFile);
 	auto output = parser.ParseInputFile();
 	auto subway = output.second;
 	cout << "number of links is :" << subway.size() << endl;
@@ -200,7 +205,7 @@ int main() {
 		Scheduler sch(output.first, (*it).second, sections);
 		schedulers.push_back(make_shared<Scheduler>(sch));
 	}
-	CreateTimeTable(schedulers, output.first * 60, 0.9, 0.75);
+	CreateTimeTable(schedulers, output.first * 60, upper, lower);
 	//string s;
 	//cin >> s;
 	return 0;
