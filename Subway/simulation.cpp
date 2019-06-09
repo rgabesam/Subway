@@ -19,7 +19,7 @@ Scheduler::Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> se
 		frequencySum = frequencySum + (*it)->GetFrequency();
 	}
 	endOfCurrentTimeSection = timeSections.at(timeSectionsIndex)->GetSectionLength() - 1;		//what time ends the first timeSection
-	
+	lineId = currLine->GetID();
 }
 
 void Scheduler::AnulateScheduler() 

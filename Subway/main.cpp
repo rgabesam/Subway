@@ -1,19 +1,52 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <map>
 
 #include "simulation.h"
 #include "inputParser.h"
 
+
+#define OUTPUT_TO_FILE
+
 using namespace std;
 
 const int startingInterval = 20;
 const string inputFile = "input_2h.txt";
+const string outputFile = "out.txt";
 const double lower = 0.7;
 const double upper = 0.9;
 
+void WriteOutput(const vector<shared_ptr<TimeSection>> & sections, ofstream & ofs) {
+	
+	int interval;
+	int time = 0; // -sections.front()->currentInterval;
+	int next;
+	int last = 0 - sections.front()->currentInterval;
+	for (auto it = sections.begin(); it != sections.end(); it++)
+	{
+		int interval = (*it)->currentInterval;
+		next = time + (*it)->GetSectionLength();
 
+		if (last + interval > time){		//case when next train doesn't start right at the begining of the section
+			time = last + interval;
+		}
+
+		
+		while (time < next) {
+			
+			ofs << "|" << time / 60 << ":" << time % 60 << "|" << endl;
+			time += interval;
+		}
+		last = time - interval;
+		time = next;
+		
+		ofs << "	potential: " << (*it)->potential << endl;
+		
+	}
+
+}
 
 
 void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/) {
@@ -208,6 +241,19 @@ int main() {
 	CreateTimeTable(schedulers, output.first * 60, upper, lower);
 	//string s;
 	//cin >> s;
+
+#ifdef OUTPUT_TO_FILE
+	ofstream myfile;
+	myfile.open(outputFile);
+	for (auto it = schedulers.begin(); it != schedulers.end(); it++)
+	{
+		myfile << "Line: " << (*it)->GetLineId() << endl;
+		WriteOutput((*it)->timeSections, myfile);
+		myfile << endl;
+	}
+	myfile.close();
+#endif // OUTPUT_TO_FILE
+
 	return 0;
 }
 
