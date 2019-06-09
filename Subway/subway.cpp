@@ -6,6 +6,9 @@
 
 using namespace std;
 
+#define DEBUG_TRAIN
+//#define DEBUG_STATION			//..nedoporucuju, vypisuje to kazdou minutu simulace pro kazdou stanici pocty vygenerovanejch cestujicich
+
 int RandomInt(int upperBound) {		//generate random int from 0 to upperBound
 	return (rand() % upperBound);
 }
@@ -49,7 +52,10 @@ void Train::GetOff()
 {
 	int stationID = station->id;
 	int leaving = passengers.at(stationID);
-	//cout << "	" << leaving << " passengers just arrived to " << station->GetName() << endl;
+#ifdef DEBUG_TRAIN
+	cout << "DEBUG:		" << leaving << " passengers just arrived to " << station->GetName() << endl;
+#endif // DEBUG
+
 	passengersCount -= leaving;
 	passengers.at(stationID) = 0;
 }
@@ -58,6 +64,14 @@ void Train::GetOff()
 
 void Station::AddPassengers(std::vector<int> & probability)
 {
+#ifdef DEBUG_STATION
+	int count = 0;
+	for (auto it = waiting.begin(); it != waiting.end(); it++)
+	{
+		count += it->second;		//total number of waiting passengers
+	}
+#endif // DEBUG
+
 	int dest;
 	for (int i = 0; i < passengersPerMinute; i++)
 	{
@@ -67,6 +81,10 @@ void Station::AddPassengers(std::vector<int> & probability)
 		}
 		waiting.at(dest)++;
 	}
+#ifdef DEBUG_STATION
+	cout << "DEBUG: station: " << name <<":original number of passengers " << count << " was increased to " << count + passengersPerMinute << endl;
+#endif // DEBUG
+
 }
 
 Station::Station(std::string s, int freq, bool transf, int numberOfStations)

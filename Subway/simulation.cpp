@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#define DEBUG
+
 const int trainCapacity = 1464;		//https://metroweb.cz/metro/M1/M1.htm	...souprava M1 v Praze
 //const int trainCapacity = 1526		//https://metroweb.cz/metro/metro/stanice/linka_a.htm		...souprava 81–71M
 
@@ -32,6 +34,11 @@ void Scheduler::AnulateScheduler()
 
 void Scheduler::SimulateMinute()
 {
+#ifdef DEBUG
+	cout << "DEBUG:		minute " << currentTime << endl;
+
+#endif // DEBUG
+
 	if (currentTime % 60 == 0)				
 		DistributePassengers(line->amountOfPassangers[currentTime / 60]);		//setting of amount of generating passengers 
 	GeneratePassengers();		
@@ -53,6 +60,9 @@ void Scheduler::SimulateMinute()
 
 	if (currentTime == endOfCurrentTimeSection && !IsEnd())
 		ScheduleNextTimeSection();
+
+
+
 }
 
 void Scheduler::DistributePassengers(int passengers)
@@ -87,9 +97,12 @@ void Scheduler::AddTrains()
 
 	line->onTheWay.push_front(make_shared<Train>(t1));
 	line->onTheWay.push_back(make_shared<Train>(t2));
+#ifdef DEBUG
+	cout << "DEBUG:		just started new train at " << line->stations.front()->GetName() << endl;
+	cout << "DEBUG:		just started new train at " << line->stations.back()->GetName() << endl;
+#endif // DEBUG
 
-	//cout << "		just started new train at " << line->stations.front()->GetName() << endl;
-	//cout << "		just started new train at " << line->stations.back()->GetName() << endl;
+	
 
 }
 

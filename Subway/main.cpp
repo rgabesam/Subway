@@ -9,6 +9,7 @@
 
 
 #define OUTPUT_TO_FILE
+#define DEBUG
 
 using namespace std;
 
@@ -49,16 +50,20 @@ void WriteOutput(const vector<shared_ptr<TimeSection>> & sections, ofstream & of
 }
 
 
-void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/) {
+void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/) 
+{
 	auto schedulersIt = schedulers.begin();
-	cout << "Day simulation started with:" << endl;
+
+#ifdef DEBUG
+	cout << "DEBUG:		Day simulation started with:" << endl;
 	for (auto it = schedulers.begin(); it != schedulers.end(); it++)
 	{
 		cout << "	" << (*it)->timeSections.size() << " time sections" << endl;
 	}
+#endif // DEBUG
+		
 	for (int i = 0; i < dayLength; i++)
 	{
-		//cout << "Simulating minute number " << i + 1 << " of " << dayLength << endl;
 		for (schedulersIt = schedulers.begin(); schedulersIt != schedulers.end(); schedulersIt++)
 		{
 			(*schedulersIt)->SimulateMinute();
