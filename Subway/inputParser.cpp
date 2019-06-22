@@ -6,7 +6,7 @@
 using namespace std;
 
 
-pair<int, map<int, LinePtr>> Parser::ParseInputFile()
+pair<int, shared_ptr<map<int, LinePtr>>> Parser::ParseInputFile()
 {
 	map<int, LinePtr> subway;
 	ReadLine();
@@ -53,7 +53,7 @@ pair<int, map<int, LinePtr>> Parser::ParseInputFile()
 		}
 	}
 
-	return make_pair(hours, subway);
+	return (make_pair(hours, make_shared< map<int, LinePtr>>(subway)));
 }
 
 shared_ptr<Line> Parser::ParseSubwayLine(int hours)

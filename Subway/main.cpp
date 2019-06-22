@@ -178,6 +178,7 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 				(*sIt)->AnulateScheduler();
 			}
 			SimulateDay(schedulers, dayLength);
+			
 			for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++)//foreach scheduler ~ foreach line
 			{
 				for (auto tIt = (*sIt)->timeSections.begin(); tIt != (*sIt)->timeSections.end(); tIt++)	//foreach time section
@@ -225,7 +226,7 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 int main() {
 	Parser parser(inputFile);
 	auto output = parser.ParseInputFile();
-	auto subway = output.second;
+	auto subway = *(output.second);
 	cout << "number of links is :" << subway.size() << endl;
 	cout << "subway is working " << output.first << " hours per day" << endl;
 

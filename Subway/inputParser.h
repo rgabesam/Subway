@@ -12,7 +12,7 @@
 class Parser {
 public:
 	Parser(std::string file) : fileName(file) { ifs = std::ifstream(file); }
-	std::pair<int, std::map<int, LinePtr>> ParseInputFile();
+	std::pair<int, std::shared_ptr<std::map<int, LinePtr>>>  ParseInputFile();
 private:
 	std::shared_ptr<Line> ParseSubwayLine(int hours);
 	void ReadLine(); //put whole line into stringstream, and also clear whole ss
