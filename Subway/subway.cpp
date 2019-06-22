@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define DEBUG_TRAIN
+//#define DEBUG_TRAIN
 //#define DEBUG_STATION			//..nedoporucuju, vypisuje to kazdou minutu simulace pro kazdou stanici pocty vygenerovanejch cestujicich
 
 int RandomInt(int upperBound) {		//generate random int from 0 to upperBound

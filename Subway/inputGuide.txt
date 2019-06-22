@@ -4,3 +4,6 @@ idLinky pocetZastavek
 ##comment##	 pocty cestujicich prepravenych v jednotlivych hodinach provozu
 NemocniceMotol 3 () Mustek 9 ( 2 ) ....
 ##comment##	zastavka frekvenceZastavky prestupy ... () odpovida neprestupove stanici a pokud je prestupova, pak ( 2 3 ) je mezi zavorakama a cisly mezera a cisla jsou id linek
+1 3 4 2 3 2 1 ...
+##comment## n-1 cisel, kde n je pocet stanic dane linky..i-te cislo uvadi dobu jizdy metra mezi i-tou a (i+1)-tou stanici v minutach
+....dalsi linka

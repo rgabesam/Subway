@@ -83,7 +83,25 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 		line.stations.push_back(station);
 	}
 
+	ReadLine();
+	vector<int> distances;	//cteni vzadelnosti mezi stanicema
+	for (int i = 0; i < numberOfStations - 1; i++)
+	{
+		distances.push_back(stoi(ReadWorld()));
+	}
+
+	int q = 0;
+	for (auto it = line.stations.begin(); it+1 != line.stations.end(); it++)	//nastavuju vzdalenost v jednom smeru
+	{
+		(*it)->nextDistance = distances[q];
+		q++;
+	}
 	
+	for (auto it = line.stations.rbegin(); it+1 != line.stations.rend(); it++)	//...v druhym smeru
+	{
+		q--;
+		(*it)->prevDistance = distances[q];
+	}
 
 	return make_shared<Line>(line);
 }

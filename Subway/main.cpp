@@ -9,7 +9,7 @@
 
 
 #define OUTPUT_TO_FILE
-#define DEBUG
+//#define DEBUG
 
 using namespace std;
 

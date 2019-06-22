@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define DEBUG
+//#define DEBUG
 
 const int trainCapacity = 1464;		//https://metroweb.cz/metro/M1/M1.htm	...souprava M1 v Praze
 //const int trainCapacity = 1526		//https://metroweb.cz/metro/metro/stanice/linka_a.htm		...souprava 81–71M
