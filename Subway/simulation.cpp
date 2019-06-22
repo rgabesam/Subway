@@ -84,7 +84,11 @@ void Scheduler::GeneratePassengers()
 
 void Scheduler::MoveTrains()
 {
-	for (auto it = line->onTheWay.begin(); it != line->onTheWay.end(); it++)
+	for (auto it = line->onTheWayFront.begin(); it != line->onTheWayFront.end(); it++)
+	{
+		(*it)->Move();
+	}
+	for (auto it = line->onTheWayBack.begin(); it != line->onTheWayBack.end(); it++)
 	{
 		(*it)->Move();
 	}
@@ -95,8 +99,8 @@ void Scheduler::AddTrains()
 	Train t1(trainCapacity, timeSections.at(timeSectionsIndex), true, line->stations.front(), line->stations.front()->nextDistance);
 	Train t2(trainCapacity, timeSections.at(timeSectionsIndex), false, line->stations.back(), line->stations.back()->prevDistance);
 
-	line->onTheWay.push_front(make_shared<Train>(t1));
-	line->onTheWay.push_back(make_shared<Train>(t2));
+	line->onTheWayFront.push_back(make_shared<Train>(t1));
+	line->onTheWayBack.push_back(make_shared<Train>(t2));
 #ifdef DEBUG
 	cout << "DEBUG:		just started new train at " << line->stations.front()->GetName() << endl;
 	cout << "DEBUG:		just started new train at " << line->stations.back()->GetName() << endl;
@@ -106,10 +110,19 @@ void Scheduler::AddTrains()
 
 }
 
+
+
 void Scheduler::ServiceTrains()
 {
-	for (auto it = line->onTheWay.begin(); it != line->onTheWay.end(); it++)
+	bool erased = false;		//if i erase train which arrived to the last station i need to decrement iterator
+	//because i use deque, i knwo that when i erase a train it is first on the deque so i couldn't decrement iterator instantly in the current loop iteration
+
+	for (auto it = line->onTheWayFront.begin(); it != line->onTheWayFront.end(); it++)
 	{
+		if (erased) {
+			erased = false;
+			it--;
+		}
 		if ((*it)->remainsToNext == 0) {
 			(*it)->PassangersOnOff();
 
@@ -121,23 +134,47 @@ void Scheduler::ServiceTrains()
 				(*it)->start->potential = potential;
 
 			//setting next station
-			if ((*it)->MovingForward()) {		//there is difference between trains with different direction		
-				(*it)->remainsToNext = (*it)->station->nextDistance;
-				(*it)->station = (*it)->station->next;
-				if ((*it)->station == NULL)			//removing trains at the last station
-					it = line->onTheWay.erase(it);
+			(*it)->remainsToNext = (*it)->station->nextDistance;
+			(*it)->station = (*it)->station->next;
+			if ((*it)->station == NULL) {			//removing trains at the last station
+				it = line->onTheWayFront.erase(it);
+				erased = true;
 			}
-			else {
-				(*it)->remainsToNext = (*it)->station->prevDistance;
-				(*it)->station = (*it)->station->prev;
-				if ((*it)->station == NULL)			//removing trains at the last station
-					it = line->onTheWay.erase(it);
-			}
+			
 		}
 
-		if (it == line->onTheWay.end())		
+		if (it == line->onTheWayFront.end())
 			break;
 		//just protection for case when it erase the last train which is last in the deque so iterator is end() ..then it would crash if it tried to increment iterator
+	}
+
+	erased = false;
+
+	for (auto it = line->onTheWayBack.begin(); it != line->onTheWayBack.end(); it++) {
+		if (erased) {
+			erased = false;
+			it--;
+		}
+		if ((*it)->remainsToNext == 0) {
+			(*it)->PassangersOnOff();
+
+			double potential = (*it)->GetPotential();
+			
+			if (potential > (*it)->start->potential)
+				(*it)->start->potential = potential;
+
+			
+			(*it)->remainsToNext = (*it)->station->prevDistance;
+			(*it)->station = (*it)->station->prev;
+			if ((*it)->station == NULL) {	//removing trains at the last station
+				it = line->onTheWayBack.erase(it);
+				erased = true;
+			}
+			
+		}
+
+		if (it == line->onTheWayBack.end())
+			break;
 	}
 }
 

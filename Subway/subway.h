@@ -23,7 +23,8 @@ public:
 	int GetID() { return id; }
 	int GetnumberOfStations() { return numberOfStations; }
 	std::deque<StationPtr> stations;
-	std::deque<TrainPtr> onTheWay;
+	std::deque<TrainPtr> onTheWayFront;
+	std::deque<TrainPtr> onTheWayBack;
 	std::vector<int> amountOfPassangers;	//number of passengers transported in each hours on this line
 	std::vector<int> probabilityMap;
 private:
