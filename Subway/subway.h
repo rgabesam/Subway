@@ -36,7 +36,7 @@ private:
 class Station {
 public:
 	Station(std::string s, int freq, bool transf, int numberOfStations);
-	void AddPassengers(std::vector<int> & probability);
+	void AddPassengers(std::vector<int> & probability, int passengersAmount);
 	int GetFrequency() { return frequency; }
 	int id;
 	std::string GetName(){ return name; }

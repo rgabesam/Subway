@@ -78,7 +78,7 @@ void Scheduler::GeneratePassengers()
 {
 	for (auto it = line->stations.begin(); it != line->stations.end(); it++)
 	{
-		(*it)->AddPassengers(line->probabilityMap);
+		(*it)->AddPassengers(line->probabilityMap, (*it)->passengersPerMinute);
 	}
 }
 

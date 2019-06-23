@@ -60,7 +60,7 @@ void Train::GetOff()
 	passengers.at(stationID) = 0;
 }
 
-void Station::AddPassengers(std::vector<int> & probability)
+void Station::AddPassengers(std::vector<int> & probability, int passengersAmount)
 {
 #ifdef DEBUG_STATION
 	int count = 0;
@@ -71,7 +71,7 @@ void Station::AddPassengers(std::vector<int> & probability)
 #endif // DEBUG
 
 	int dest;
-	for (int i = 0; i < passengersPerMinute; i++)
+	for (int i = 0; i < passengersAmount; i++)
 	{
 		dest = id;
 		while (dest == id) {
