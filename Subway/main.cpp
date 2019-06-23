@@ -159,7 +159,8 @@ void IntervalCorrectionAutomat(TimeSectionPtr toChange, const double upperBound,
 		if (toChange->potential < lowerBound) {
 			if (toChange->currentInterval >= toChange->GetSectionLength())	//case when count of passengers is so low that even interval big as time section is not enough to pass to bound
 				toChange->state = 4;
-			IncreaseInterval(toChange, lowerBound);		//state stays
+			else
+				IncreaseInterval(toChange, lowerBound);		//state stays
 		}
 		else if (toChange->potential > upperBound) {	 //overflow so return to state 0
 			toChange->state = 0;
@@ -173,7 +174,8 @@ void IntervalCorrectionAutomat(TimeSectionPtr toChange, const double upperBound,
 		if (toChange->potential > upperBound) {
 			if (toChange->currentInterval == 1)	//case when count of passengers is so big that even 1 minute interval cannot manage it
 				toChange->state = 4;
-			DecreaseInterval(toChange);		//state stays
+			else
+				DecreaseInterval(toChange);		//state stays
 		}
 		else if (toChange->potential < lowerBound) {	 //overflow so return to state 0
 			toChange->state = 0;
