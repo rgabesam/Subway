@@ -53,7 +53,34 @@ pair<int, shared_ptr<map<int, LinePtr>>> Parser::ParseInputFile()
 		}
 	}
 
+	ResolveTransfers(subway);
+
 	return (make_pair(hours, make_shared< map<int, LinePtr>>(subway)));
+}
+
+void  Parser::ResolveTransfers(map<int, LinePtr> & subway) {
+	//resolving transfers...it has big complexity, but it is done only once and probably on not big input
+	for (auto it = subway.begin(); it != subway.end(); it++)
+	{
+		for (auto it2 = (*it).second->stations.begin(); it2 != (*it).second->stations.end(); it2++)
+		{
+			if ((*it2)->IsTransferStation()) {
+				for (auto it3 = (*it2)->transfersToResolve.begin(); it3 != (*it2)->transfersToResolve.end(); it3++)
+				{
+					auto line = subway.at(*it3);
+					StationPtr station;
+					for (auto it4 = line->stations.begin(); it4 != line->stations.end(); it4++)
+					{
+						if ((*it4)->GetName() == (*it2)->GetName()) {
+							station = (*it4);
+							break;
+						}
+					}
+					(*it2)->transfers.emplace(make_pair(line, station));
+				}
+			}
+		}
+	}
 }
 
 shared_ptr<Line> Parser::ParseSubwayLine(int hours)

@@ -60,8 +60,6 @@ void Train::GetOff()
 	passengers.at(stationID) = 0;
 }
 
-
-
 void Station::AddPassengers(std::vector<int> & probability)
 {
 #ifdef DEBUG_STATION
@@ -88,7 +86,8 @@ void Station::AddPassengers(std::vector<int> & probability)
 }
 
 Station::Station(std::string s, int freq, bool transf, int numberOfStations)
-	: name(s), frequency(freq), transferStation(transf), nextDistance(stationsDistance), prevDistance(stationsDistance)
+	: name(s), frequency(freq), transferStation(transf), nextDistance(stationsDistance), prevDistance(stationsDistance)		
+	//before was distance between stations const but, now it is still initialization with const but afterwards is set explicitly by input
 {
 	for (int i = 1; i <= numberOfStations; i++)
 	{

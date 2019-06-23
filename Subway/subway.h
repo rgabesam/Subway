@@ -45,7 +45,7 @@ public:
 	int nextDistance;
 	StationPtr prev;
 	int prevDistance;
-	std::set<StationPtr> transfers;
+	std::set<std::pair<LinePtr, StationPtr>> transfers; //i need also LinePtr because i need probabilityMap from it to add passengers
 	std::set<int> transfersToResolve;		//because not every line is parsed when concreate station is parsing so transfers will be resolved later
 	int passengersPerMinute;		//how many passengers come every minute
 	std::map<int, int> waiting;		//number of waiting passengers and their destination

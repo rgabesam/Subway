@@ -18,6 +18,7 @@ private:
 	void ReadLine(); //put whole line into stringstream, and also clear whole ss
 	std::string ReadWorld();	//return one world of line or \n at the end
 	StationPtr ParseStation(int numberOfStations);
+	void ResolveTransfers(std::map<int, LinePtr> & subway);
 	std::ifstream ifs;
 	std::stringstream ss;
 	std::string fileName;

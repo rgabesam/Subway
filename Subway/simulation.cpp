@@ -110,8 +110,6 @@ void Scheduler::AddTrains()
 
 }
 
-
-
 void Scheduler::ServiceTrains()
 {
 	bool erased = false;		//if i erase train which arrived to the last station i need to decrement iterator
