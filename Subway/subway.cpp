@@ -56,6 +56,18 @@ void Train::GetOff()
 	cout << "DEBUG:		" << leaving << " passengers just arrived to " << station->GetName() << endl;
 #endif // DEBUG
 
+	if (station->IsTransferStation()) {
+		int transfering = leaving / (station->transfers.size() + 1);
+		for (auto it = station->transfers.begin(); it != station->transfers.end(); it++)
+		{
+			(*it).second->AddPassengers((*it).first->probabilityMap, transfering);
+		}
+
+#ifdef DEBUG_TRAIN
+		cout << "DEBUG:		" << leaving << "		station is trasfer so " << transfering <<   " people transfer" << endl;
+#endif // DEBUG
+	}
+
 	passengersCount -= leaving;
 	passengers.at(stationID) = 0;
 }

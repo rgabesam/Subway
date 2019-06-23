@@ -1,54 +1,56 @@
 Line: 1
 |0:0|
 |0:5|
-	potential: 0.764344
+	potential: 0.794399
 |0:10|
-	potential: 0.770492
+	potential: 0.819672
 |0:15|
 |0:20|
-	potential: 0.763661
+	potential: 0.769809
 |0:25|
-	potential: 0.761612
+	potential: 0.778689
 |0:30|
 |0:35|
-	potential: 0.756148
+	potential: 0.769126
 |0:40|
-	potential: 0.777322
+	potential: 0.795765
 |0:45|
 |0:50|
-	potential: 0.719945
+	potential: 0.729508
 |0:58|
-	potential: 0.446038
-|1:28|
-	potential: 0.377732
-|1:43|
-	potential: 0.181694
-|1:50|
-	potential: 0.0703552
-|1:58|
-	potential: 0
+	potential: 0.431011
+|1:26|
+	potential: 0.730191
+|1:41|
+	potential: 0.35929
+|1:48|
+	potential: 0.0758197
+|1:55|
+	potential: 0.022541
 
 Line: 2
 |0:0|
-|0:28|
-	potential: 0.702869
-|0:40|
-	potential: 0.769809
-|0:48|
-|0:56|
-	potential: 0.740437
-|1:3|
-	potential: 0.715847
-|1:10|
-	potential: 0.711066
-|1:17|
-	potential: 0.709699
-|1:24|
-	potential: 0.706284
-|1:32|
-|1:40|
-	potential: 0.806011
-|1:48|
-|1:56|
-	potential: 0.331284
+	potential: 0.51571
+|0:15|
+|0:29|
+	potential: 0.750683
+|0:39|
+	potential: 0.794399
+|0:47|
+|0:55|
+	potential: 0.752732
+|1:2|
+	potential: 0.709016
+|1:9|
+	potential: 0.715164
+|1:16|
+	potential: 0.759563
+|1:23|
+	potential: 0.75888
+|1:30|
+	potential: 0.713798
+|1:38|
+	potential: 0.79918
+|1:53|
+	potential: 0.330601
 
