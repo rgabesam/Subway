@@ -25,13 +25,5 @@ private:
 };
 
 
-class InputErrorException : public std::exception {
-public:
-	InputErrorException(std::string msg) : message(msg) {}
-	virtual const char *what() const { return message.c_str();
-	}
-private:
-	std::string message;
-};
 
 #endif 
