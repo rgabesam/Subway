@@ -26,6 +26,10 @@ Scheduler::Scheduler(int hours, LinePtr currLine, std::vector<TimeSectionPtr> se
 
 void Scheduler::AnulateScheduler() 
 {
+	for (auto it = timeSections.begin(); it != timeSections.end(); it++)
+	{
+		(*it)->potential = 0;
+	}
 	currentTime = 0;
 	timeSectionsIndex = 0;
 	lastTrain = timeSections.at(timeSectionsIndex)->currentInterval;
