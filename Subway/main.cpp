@@ -90,7 +90,7 @@ void DecreaseInterval(TimeSectionPtr toChange) {
 	if (toChange->currentInterval % 2 == 0)
 		toChange->currentInterval /= 2;
 	else
-		toChange->currentInterval = toChange->currentInterval / 2 + 1;
+		toChange->currentInterval = (toChange->currentInterval / 2) + 1;
 }
 
 shared_ptr< vector<TimeSectionPtr>> SplitTimeSections(vector<TimeSectionPtr>& oldSections) {
@@ -115,7 +115,8 @@ shared_ptr< vector<TimeSectionPtr>> SplitTimeSections(vector<TimeSectionPtr>& ol
 		}
 		else {
 			TimeSection section((*it)->GetSectionLength(), (*it)->currentInterval);
-			section.finalLook= true;		//cannot be splitted and changed interval
+			//section.finalLook= true;		//cannot be splitted and changed interval
+			section.finalLook = false;
 			section.state = 0;		//anulating state of interval correction automat
 			newSections.push_back(make_shared<TimeSection>(section));
 		}
@@ -173,7 +174,7 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 	{
 		bool readyToSplit = false;
 		while (!readyToSplit) {
-			readyToSplit = true;		//if any time sections interval is changed readyToSplit is set to false;
+			readyToSplit = true;		//if any time section's interval is changed, readyToSplit is set to false;
 			for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++) {
 				(*sIt)->AnulateScheduler();
 			}
@@ -206,7 +207,7 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 			}
 		}
 
-		ready = true; //if any time section is splitted ready is set to false;
+		ready = true; //if any time section is splitted, ready is set to false;
 		for (auto sIt = schedulers.begin(); sIt != schedulers.end(); sIt++)//foreach scheduler ~ foreach line
 		{
 			auto newSections = *(SplitTimeSections((*sIt)->timeSections));
@@ -232,10 +233,8 @@ int main() {
 
 	
 	vector<SchedulerPtr> schedulers;
-	//TimeSection section(output.first * 30, 1);
 	
-	//section = TimeSection(output.first * 30, 2);
-	//sections.push_back(make_shared<TimeSection>(section));
+	//creating schedulers
 	for (auto it = subway.begin(); it != subway.end(); it++)
 	{
 		TimeSection section(output.first * 60, startingInterval);
@@ -244,9 +243,10 @@ int main() {
 		Scheduler sch(output.first, (*it).second, sections);
 		schedulers.push_back(make_shared<Scheduler>(sch));
 	}
+
+	//algorithm
 	CreateTimeTable(schedulers, output.first * 60, upper, lower);
-	//string s;
-	//cin >> s;
+
 
 #ifdef OUTPUT_TO_FILE
 	ofstream myfile;
