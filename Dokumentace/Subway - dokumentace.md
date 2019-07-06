@@ -25,6 +25,7 @@ Po doběhnutí simulace jednoho dne se projdou všechny sekce a zkontroluje se, 
 Součástí vstupu je i přirozené číslo určující přesnost. Toto číslo určuje kolikrát každá sekce může navštívit stav 0.  Ve chvíli, kdy jsou všechny sekce ve stavu 4 se všechny sekce, které jsou větší než dvojnásobek svého intervalu, rozdělí napolovic. Všechny které toto kritérium nesplňují zůstanou stejné až na ty které skončily ve stavu 4, s potenciálem nižším než spodní hranice. Takové sekce se spojí s jednou následující aby se v nich mohl zvětšovat interval. Interval totiž nesmí přesáhnout velikost sekce.
 
 Tento cyklus se stále opakuje dokud u všech linek se nezmění ani jedna sekce. Pak algoritmus skončí a vydá nový soubor s ideálními intervaly.
+
 ![alg2](alg2.jpg) 
 
 ## Simulace dne 
