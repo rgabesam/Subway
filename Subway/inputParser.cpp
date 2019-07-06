@@ -10,8 +10,8 @@ pair<int, shared_ptr<map<int, LinePtr>>> Parser::ParseInputFile()
 {
 	map<int, LinePtr> subway;
 	ReadLine();
-	int numberOfLines = stoi(ReadWorld());
-	int hours = stoi(ReadWorld());
+	int numberOfLines = stoi(ReadWord());
+	int hours = stoi(ReadWord());
 	for (int i = 0; i < numberOfLines; i++)
 	{
 		auto line = ParseSubwayLine(hours);
@@ -88,17 +88,17 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 	ReadLine();
 	string s;
 	
-	s = ReadWorld();
+	s = ReadWord();
 	int id = stoi(s);
 	
-	s = ReadWorld();
+	s = ReadWord();
 	int numberOfStations = stoi(s);
 
 	ReadLine();
 	vector<int> passangers;
 	for (int i = 0; i < hours; i++)
 	{
-		passangers.push_back(stoi(ReadWorld()));
+		passangers.push_back(stoi(ReadWord()));
 	}
 
 	Line line(id, numberOfStations, passangers);
@@ -114,7 +114,7 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 	vector<int> distances;	//cteni vzadelnosti mezi stanicema
 	for (int i = 0; i < numberOfStations - 1; i++)
 	{
-		distances.push_back(stoi(ReadWorld()));
+		distances.push_back(stoi(ReadWord()));
 	}
 
 	int q = 0;
@@ -140,19 +140,19 @@ StationPtr Parser::ParseStation(int numberOfStations)
 	int freq;
 	
 
-	name = ReadWorld();
-	freq = stoi(ReadWorld());
+	name = ReadWord();
+	freq = stoi(ReadWord());
 
-	s = ReadWorld();
+	s = ReadWord();
 	if (s == "()") {
 		return make_shared<Station>(Station(name, freq, false, numberOfStations));
 	}
 
 	Station station(name, freq, true, numberOfStations);
-	s = ReadWorld();
+	s = ReadWord();
 	while (s != ")") {
 		station.transfersToResolve.emplace(stoi(s));
-		s = ReadWorld();
+		s = ReadWord();
 	}
 
 	return make_shared<Station>(station);
