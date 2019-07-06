@@ -167,7 +167,7 @@ void Parser::ReadLine()
 	ss << line;
 }
 
-std::string Parser::ReadWorld()
+std::string Parser::ReadWord()
 {
 	string ret;
 	if (ss.good())
