@@ -26,3 +26,5 @@ Součástí vstupu je i přirozené číslo určující přesnost. Toto číslo 
 
 Tento cyklus se stále opakuje dokud u všech linek se nezmění ani jedna sekce. Pak algoritmus skončí a vydá nový soubor s ideálními intervaly.
 ![alg2](alg2.jpg) 
+
+![alg3](alg3.jpg)
