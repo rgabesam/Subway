@@ -382,3 +382,86 @@ Je nutné přené dodržení formátu vstupních dat, viz níže. Pokud by form�
 
 ### Vstupní soubor
 
+Vstupní soubor je pouze textový soubor popisující linky metra a počty cestujících.  Všechny "slova" jsou jednoduše oddělena mezerou. Na první řádce souboru se udávají pouze dvě čísla:
+
+1. počet linek na vstupu
+2. počet hodin provozu
+
+př.: 
+
+> 2 3
+
+Toto odpovídá 2 linkám a 3-hodinovému provozu.
+
+Po těchto dvou číslech už se na dalších řádkách opakují linky, kterých je tolik, kolik bylo výše napsáno. Popis jedné linky zabere 4 řádky.
+
+#### Linka - formát
+
+Každá linka je popsaná 4-mi řádky, kde vždy je vše odděleno mezerou:
+
+##### 1.řádek
+
+Na první řádce se nachází dvě čísla:
+
+1. jedinečné **id linky** ve formátu přirozeného čísla
+2. počet zastávek dané linky
+
+př.:
+
+>1 5
+
+Toto odpovídá lince s identifikátorem 1 a se 5 zastávkami.
+
+##### 2.řádek
+
+Na druhé řádce se nachází **n** čísel, kde n je doba provozu. Respektive pro každou dobu provozu jedno číslo. Číslo určuje kolik cestujících daná linka v danou hodinu provozu celkem přepraví.
+
+př.:
+
+> 25400 50100 55000
+
+Takto vypadá vstup pro 3-hodinový provoz. Pokud by byla doba provozu např 24 hodin, muselo by zde být 24 oddělených přirozených čísel.
+
+##### 3.řádek
+
+Na 3. řádku se nachází popis všech stanic linky. Každá stanice se skládá ze tří komponent :
+
+1. jméno stanice bez mezer
+2. přirozené číslo od 1 do 10 udávající frekvenci zastávky, kdy vyšší číslo znamená vyšší frekvenci
+3. přestupy:
+
+-> Pokud je stanice nepřestupová, tak se tam napíší pouze prázdné závorky bez mezery: "()"
+
+-> Pokud je stanice přestupová, tak se dovnitř závorek napíší identifikátory linek, na které zde lze přestoupit. Vše je oddělené mezerou i číslo a závorky : "( 2 3 )"
+
+Důležité je, že pokud je nějaká stanice přestupová, musí na lince kam lze přestoupit, být stejně se jmenující zastávka.
+
+Po takto definované jedné stanici, následuje další stejně definovaná, oddělená mezerou. Počet definovaných stanic na dané lince musí odpovídat 2. číslu na 1. řádce popisu linky.
+
+př.:
+
+> Malostranska 6 () Staromestska 6 () Mustek 9 ( 2 ) Muzeum 9 () NamestiMiru 7 ()
+
+##### 4.řádek
+
+Na 4. řádku se nachází vzdálenosti mezi jednotlivými stanicemi. Vzdálenost je zde vyjádřena v čase jízdy mezi stanicemi v celých kladných minutách. To znamená že je zde *(n-1)* přirozených čísel, kde *n* je počet stanic dané linky. První číslo odpovídá době jízdy mezi první a druhou zastávkou, tedy obecně i-té číslo odpovídá době jízdy mezi i-tou a (i+1)-ní zastávkou.
+
+př.:
+
+> 2 3 3 3
+
+
+
+Těmito 4-mi řádky je  definovaná právě jedna linka. Linek může být libovolně mnoho, ale jejich množství musí odpovídat číslu ze začátku souboru.
+
+Zde ještě celistvý vstupní soubor jako příklad:
+
+>2 3
+>1 5
+>50000 4500 21500
+>Malostranska 6 () Staromestska 6 () Mustek 9 ( 2 ) Muzeum 9 () NamestiMiru 7 ()
+>2 3 3 3
+>2 5
+>9000 35000 26000
+>KarlovoNamesti 7 () NarodniTrida 7 () Mustek 8 ( 1 ) NamestiRepubliky 6 () Florenc 9 
+>3 2 1 3
