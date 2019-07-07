@@ -266,13 +266,21 @@ int main(int argc, char** argv) {
 		upper = stod(argv[3]);
 		accuracy = stoi(argv[4]);
 		trainCapacity = stoi(argv[5]);
+#ifdef DEBUG
+		cout << "arguments" << endl;
+		cout << "	" << argv[1] << endl;
+		cout << "	" << argv[2] << endl;
+		cout << "	" << argv[3] << endl;
+		cout << "	" << argv[4] << endl;
+		cout << "	" << argv[5] << endl;
+#endif
 	}
 	catch (exception) {
 		cout << "Arguments are wrong";
 		return 0;
 	}
 
-
+	cout << "Entering parsing function." << endl << endl;
 	Parser parser(inputFile);
 	auto output = parser.ParseInputFile();
 	auto subway = *(output.second);

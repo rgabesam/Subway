@@ -1,17 +1,24 @@
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 #include "inputParser.h"
 
 using namespace std;
 
+//#define DEBUG
+
 
 pair<int, shared_ptr<map<int, LinePtr>>> Parser::ParseInputFile()
 {
+#ifdef DEBUG
+	cout << "Entered ParseInputFile func." << endl << endl;
+#endif
 	map<int, LinePtr> subway;
 	ReadLine();
 	int numberOfLines = stoi(ReadWord());
 	int hours = stoi(ReadWord());
+
 	for (int i = 0; i < numberOfLines; i++)
 	{
 		auto line = ParseSubwayLine(hours);
@@ -41,6 +48,10 @@ pair<int, shared_ptr<map<int, LinePtr>>> Parser::ParseInputFile()
 		}
 	}
 
+#ifdef DEBUG
+		cout << "	ParseInputFile 2." << endl << endl;
+#endif
+
 	for (auto it = subway.begin(); it != subway.end(); it++)
 	{
 		for (auto it2 = (*it).second->stations.begin(); it2 != (*it).second->stations.end(); it2++)
@@ -55,10 +66,15 @@ pair<int, shared_ptr<map<int, LinePtr>>> Parser::ParseInputFile()
 
 	ResolveTransfers(subway);
 
+
 	return (make_pair(hours, make_shared< map<int, LinePtr>>(subway)));
 }
 
 void  Parser::ResolveTransfers(map<int, LinePtr> & subway) {
+#ifdef DEBUG
+	cout << "Entered ResolveTransfers func." << endl << endl;
+#endif
+
 	//resolving transfers...it has big complexity, but it is done only once and probably on not big input
 	for (auto it = subway.begin(); it != subway.end(); it++)
 	{
@@ -85,6 +101,11 @@ void  Parser::ResolveTransfers(map<int, LinePtr> & subway) {
 
 shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 {
+#ifdef DEBUG
+	cout << "Entered ParseSubwayLine func." << endl << endl;
+#endif
+
+
 	ReadLine();
 	string s;
 	
@@ -135,6 +156,11 @@ shared_ptr<Line> Parser::ParseSubwayLine(int hours)
 
 StationPtr Parser::ParseStation(int numberOfStations)
 {
+#ifdef DEBUG
+	cout << "Entered ParseStation func." << endl << endl;
+#endif
+
+
 	string name;
 	string s;
 	int freq;
@@ -170,9 +196,11 @@ void Parser::ReadLine()
 std::string Parser::ReadWord()
 {
 	string ret;
-	if (ss.good())
+	if (ss.good()) {
 		ss >> ret;
-	else
+	}
+	else {
 		ret = "\n";
+	}
 	return ret;
 }
