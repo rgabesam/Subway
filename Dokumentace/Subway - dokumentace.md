@@ -316,27 +316,69 @@ Implementaci algoritmu pro vytvoření ideálního jízdního řádu zařizují 
 * SimulateDay
 * WriteOutput
 
-Vše samozřejmě začíná v metodě main. Tam se nejprve zpracují vstupní argumenty, pokud nastane při jejich zpracování výjimka nebo pokud je špatný počet argumentů, program skončí. Poté main nechá naparsovat vstupní soubor. Naparsovaná data potom ještě vloží do instancí *Schedulerů*, které se v main vytvoří. Potom se spustí celý algoritmus funkcí *CreateTimeTable* a nakonec pokud je zapnutý výpis do souboru, což defaultně je, zapíše ideální jízdní řád do souboru.
+Vše samozřejmě začíná v metodě main. Tam se nejprve zpracují vstupní argumenty, pokud nastane při jejich zpracování výjimka nebo pokud je špatný počet argumentů, program skončí. Poté main nechá naparsovat vstupní soubor. Naparsovaná data potom ještě vloží do instancí *Schedulerů*, které se v main vytvoří. Potom se spustí celý algoritmus funkcí *CreateTimeTable* a nakonec pokud je zapnutý výpis do souboru, což defaultně je, zapíše ideální jízdní řád do souboru pomocí funkce *WriteOutput*.
+
+
 
 #### CreateTimeTable
+
+Funkce pracuje na dvou cyklech. Vnější cyklus se opakuje dokud nedoběhne algoritmus tvorby ideálního jízdního řádu, respektive dokud se alespoň jedna *TimeSection* změní. Vnitřní cyklus se opakuje dokud všechny *TimeSection*s nejsou ve stavu 4. Uvnitř cyklů dochází k opakované simulaci jednoho dne provozu metra. Před každou další simulací se ještě vynulují *Schedulery* jejich instanční funkcí *AnulateScheduler*. Naopak po každé simulaci se projdou všechny *TimeSection*s a pokud již nejsou ve stavu 4, zavolá se na ně funkce *IntervalCorrectionAutomat*, která implementuje stavový automat. Po dokončení vnitřního cyklu se zavolá funkce *SplitTimeSections*, která napůlí, spojí nebo nechá *TimeSection*s. Pokud metoda mimo jiné vrátí false, znamená to, že něco změnila, tudíž se vnější cyklus opakuje. Po skončení obou cyklů se ještě provede jedna konečná simulace, která jen spočítá konečné potenciály (je tam už jen pro případnou kontrolu). 
 
 
 
 #### IntervalCorrectionAutomat
+
+Fuknce je pouhou implementací stavového automatu který je výše důkladně popsán. Implementovaná je pomocí switche. Rekurzivně pak volá metody *DecreaseInterval* a *IncreaseInterval*, které zvětšují nebo zmenšují intervaly. Zároveň obsahuje ochranu proti zacyklení, spočívající v tom, že pokud je interval už minimální, tj. 1 a chtěl by se stále snižovat nebo pokud je dlouhý jak jeho *TimeSection*, tak se skece rovnou nastaví do stavu 4. 
+
+
+
 #### SplitTimeSections
+
+Metoda je znovu velmi jednoduchá. Pouze dělá nové instance všech sekcí. Pokud to lze tak je napůlí. Pokud potřebují kvůli nevyužitému potenciálu dvě sekce spojit tak je spojí a jinak jsou nechány sekce v původním stavu. Kritérium pro rozdělení sekce je podmínka, že v každé sekci musí vyjet vlak, respektive že délka steré sekce musí být alespoň dvojnásobná vůči starému intervalu. Nové dvě sekce podědí interval po staré a jinak jsou úplně nové  v tom smyslu, že se nacházejí poprvé ve stavu 0. Pro spojování sekcí to je stejné, jen se nastaví příznak *merged*, který sekci již zakazuje se dělit.
+
+
+
 #### DecreaseInterval
+
+Pokud interval sekce je == 1, rovnou se její stav nastaví na 3 a vrátí se tak jak je, poněvadž menší interval nelze.  Jinak interval vždy napůlí. Pokud je původní interval lichý, vezme se horní celá část.
+
+
+
 #### IncreaseInterval
+
+Zvedá délku intervalu tak, aby stále platilo pravidlo, že v každé sekci musí vyjet alespoň jeden vlak. Interval se buď zdvojnásobuje nebo se inkrementuje pouze o jedna.
+
+
+
 #### SimulateDay
+
+Jedinou úlohou funkce je simulace celého dne provozu na všech linkách. Prochází tedy popořadě stále dokola všechny *Scheduler*y a na každém zavolá *SimulateMinute*. Cyklus cyklí, dokud neskončí provozní den.
+
+
+
 #### WriteOutput
 
+Pouze zapíše do souboru s názvem podle vstupního souboru s příponou ".out".  Pro každou linku předpokládá počáteční čas 00:00 a k tomu přičítá intervaly.
 
 
 
+## Uživatelská příručka
+
+### Používání
+
+Program se otevře s příkazové řádky s 5 argumenty:
+
+1. cesta ke vstupnímu souboru
+2. spodní hranice potenciálu, kde číslo je reálně číslo od 0 do 1
+3. horní hranice potenciálu, kde číslo je reálně číslo od 0 do 1
+4. přesnost výpočtu,  kde vstupem je přirozené číslo od 1; doporučená hodnota je 5 - 10
+5. kapacita jedné vlakové soupravy, přirozené číslo; pro představu souprava pražského metra má udávanou kapacitu cca1500 cestujících
+
+Program posléze nějakou dobu poběží. Pro představu na dvou pražských linkách s relativně reálnými hodnotami, pouze dvouhodinovým provozem a přesností 10 mi program doběhl zhruba po 45 sekundách.
+
+Je nutné přené dodržení formátu vstupních dat, viz níže. Pokud by formát nebyl dodržen není zajištěn správný běh programu ! Na konci běhu se pak výstup zapíše do souboru pojmenovaným stejně jako vstupní soubor, pouze s přidanou koncovkou ".out". Jedná se pouze o textová data.
 
 
 
-
-
-
-
+### Vstupní soubor
 
