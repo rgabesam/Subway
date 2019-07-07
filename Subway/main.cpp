@@ -6,6 +6,7 @@
 
 #include "simulation.h"
 #include "inputParser.h"
+#include "commonVars.h"
 
 
 #define OUTPUT_TO_FILE
@@ -14,12 +15,21 @@
 using namespace std;
 
 const int startingInterval = 20;
+
 //const string inputFile = "input_2h.txt";
-const string inputFile = "input_8h.txt";
-const string outputFile = "out.txt";
-const double lower = 0.7;
-const double upper = 0.9;
-const int accuracy = 10; //determines how many times can timeSection turn increasing to decreasing or vice versa
+////const string inputFile = "input_8h.txt";
+//const string outputFile = "out.txt";
+//const double lower = 0.7;
+//const double upper = 0.9;
+//const int accuracy = 10; //determines how many times can timeSection turn increasing to decreasing or vice versa
+
+int trainCapacity;
+
+string inputFile;
+string outputFile;
+double lower;
+double upper;
+int accuracy;
 
 void WriteOutput(const vector<shared_ptr<TimeSection>> & sections, ofstream & ofs) {
 	
@@ -45,7 +55,7 @@ void WriteOutput(const vector<shared_ptr<TimeSection>> & sections, ofstream & of
 		last = time - interval;
 		time = next;
 		
-		ofs << "	potential: " << (*it)->potential << endl;
+		//ofs << "	potential: " << (*it)->potential << endl;
 		
 	}
 
@@ -242,12 +252,33 @@ void CreateTimeTable(vector<SchedulerPtr>& schedulers, int dayLength /*in minute
 	SimulateDay(schedulers, dayLength);
 }
 
-int main() {
+int main(int argc, char** argv) {
+	//number of arguments must be == 6 ~ name of program and 5 additional args
+	if (argc != 6) {
+		cout << "Invalid number of arguments";
+		return 0;
+	}
+	//arg 1 ~ input file, arg 2 ~ lower potential bound, arg 3 ~ upper potential bound, arg 4 ~ accuary, arg 5 ~ train capacity
+	try {
+		inputFile = argv[1];
+		outputFile = inputFile + ".out";
+		lower = stod(argv[2]);
+		upper = stod(argv[3]);
+		accuracy = stoi(argv[4]);
+		trainCapacity = stoi(argv[5]);
+	}
+	catch (exception) {
+		cout << "Arguments are wrong";
+		return 0;
+	}
+
+
 	Parser parser(inputFile);
 	auto output = parser.ParseInputFile();
 	auto subway = *(output.second);
+	cout << "Input file was successfully parsed." << endl << endl;
 	cout << "number of links is :" << subway.size() << endl;
-	cout << "subway is working " << output.first << " hours per day" << endl;
+	cout << "subway is working " << output.first << " hours per day" << endl << endl;
 
 	
 	vector<SchedulerPtr> schedulers;
@@ -262,8 +293,10 @@ int main() {
 		schedulers.push_back(make_shared<Scheduler>(sch));
 	}
 
+	cout << "Algorithm started..." << endl;
 	//algorithm
 	CreateTimeTable(schedulers, output.first * 60, upper, lower);
+	cout << "Algorithm successfully ended." << endl;
 
 
 #ifdef OUTPUT_TO_FILE
@@ -277,6 +310,9 @@ int main() {
 	}
 	myfile.close();
 #endif // OUTPUT_TO_FILE
+	cout << "Timetable was created." << endl;
+
+
 
 	return 0;
 }

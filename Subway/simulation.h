@@ -39,7 +39,6 @@ public:
 	void SimulateMinute();
 	void AnulateScheduler();		//anulate all values make the scheduler ready to simulate another day
 	std::vector<TimeSectionPtr> timeSections;
-	//std::vector<TimeSectionPtr>::iterator timeSectionsIt;
 	int timeSectionsIndex;
 	int GetLineId() { return lineId; }
 	bool IsEnd() { return (currentTime + 1 == dayLength); }

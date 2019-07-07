@@ -121,6 +121,7 @@
     <ClCompile Include="subway.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="commonVars.h" />
     <ClInclude Include="inputParser.h" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="subway.h" />
