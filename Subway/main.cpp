@@ -76,9 +76,9 @@ void SimulateDay(vector<SchedulerPtr>& schedulers, int dayLength /*in minutes*/)
 		
 	for (int i = 0; i < dayLength; i++)
 	{
-		for (schedulersIt = schedulers.begin(); schedulersIt != schedulers.end(); schedulersIt++)
+		for (auto& scheduler : schedulers)
 		{
-			(*schedulersIt)->SimulateMinute();
+			scheduler->SimulateMinute();
 		}
 	}
 }
